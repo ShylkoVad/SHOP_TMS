@@ -2,16 +2,16 @@ package by.teachmeskills.shop.repositories.impl;
 
 import by.teachmeskills.shop.domain.Image;
 import by.teachmeskills.shop.repositories.ImageRepository;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCallback;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class ImageRepositoryImpl implements ImageRepository {
+    private final JdbcTemplate jdbcTemplate;
     private static final String ADD_IMAGE_QUERY = "INSERT INTO images (imagePath, categoryId, productId, primaryImage) VALUES (?, ?, ?, ?)";
     private static final String GET_ALL_IMAGES_QUERY = "SELECT * FROM images";
     private static final String UPDATE_IMAGE_QUERY = "UPDATE images SET imagePath = ? WHERE id = ?";
@@ -20,176 +20,76 @@ public class ImageRepositoryImpl implements ImageRepository {
     private static final String GET_IMAGE_BY_CATEGORY_ID_QUERY = "SELECT * FROM images WHERE categoryId = ?";
     private static final String GET_IMAGES_BY_PRODUCT_ID_QUERY = "SELECT * FROM images WHERE productId = ?";
 
+    public ImageRepositoryImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     @Override
     public Image create(Image entity) {
-        Connection connection = connectionPool.getConnection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(ADD_IMAGE_QUERY);
-
-            preparedStatement.setString(1, entity.getImagePath());
-            preparedStatement.setInt(2, entity.getCategoryId());
-            preparedStatement.setInt(3, entity.getProductId());
-            preparedStatement.setInt(4, entity.getPrimaryImage());
-            preparedStatement.execute();
-
-            preparedStatement.close();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        } finally {
-            connectionPool.closeConnection(connection);
-        }
-        return entity;
+        return jdbcTemplate.execute(ADD_IMAGE_QUERY, (PreparedStatementCallback<Image>) ps -> {
+            ps.setString(1, entity.getImagePath());
+            ps.setInt(2, entity.getCategoryId());
+            ps.setInt(3, entity.getProductId());
+            ps.setInt(4, entity.getPrimaryImage());
+            ps.execute();
+            return entity;
+        });
     }
 
     @Override
     public List<Image> read() {
-        List<Image> images = new ArrayList<>();
-        Connection connection = connectionPool.getConnection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_IMAGES_QUERY);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                images.add(Image.builder()
-                        .id(resultSet.getInt("id"))
-                        .imagePath(resultSet.getString("imagePath"))
-                        .categoryId(resultSet.getInt("categoryId"))
-                        .productId(resultSet.getInt("productId"))
-                        .primaryImage(resultSet.getInt("primaryImage"))
-                        .build()
-                );
-            }
-
-            resultSet.close();
-            preparedStatement.close();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        } finally {
-            connectionPool.closeConnection(connection);
-        }
-        return images;
+        return jdbcTemplate.query(GET_ALL_IMAGES_QUERY, (rs, rowNum) -> Image.builder()
+                .id(rs.getInt("id"))
+                .imagePath(rs.getString("imagePath"))
+                .categoryId(rs.getInt("categoryId "))
+                .productId(rs.getInt("productId"))
+                .primaryImage(rs.getInt("primaryImage"))
+                .build());
     }
 
     @Override
     public Image update(Image entity) {
-        Connection connection = connectionPool.getConnection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_IMAGE_QUERY);
-
-            preparedStatement.setString(1, entity.getImagePath());
-            preparedStatement.setInt(2, entity.getId());
-
-            preparedStatement.execute();
-
-            preparedStatement.close();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        } finally {
-            connectionPool.closeConnection(connection);
-        }
-        return entity;
+        return jdbcTemplate.execute(UPDATE_IMAGE_QUERY, (PreparedStatementCallback<Image>) ps -> {
+            ps.setString(1, entity.getImagePath());
+            ps.setInt(2, entity.getId());
+            ps.execute();
+            return entity;
+        });
     }
 
     @Override
     public void delete(int id) {
-        Connection connection = connectionPool.getConnection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_IMAGE_QUERY);
-            preparedStatement.setInt(1, id);
-
-            preparedStatement.execute();
-
-            preparedStatement.close();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        } finally {
-            connectionPool.closeConnection(connection);
-        }
+        jdbcTemplate.update(DELETE_IMAGE_QUERY, id);
     }
 
     @Override
     public Image findById(int id) {
-        Image image = null;
-        Connection connection = connectionPool.getConnection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(GET_IMAGE_BY_ID_QUERY);
-
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                image = Image.builder()
-                        .id(resultSet.getInt("id"))
-                        .imagePath(resultSet.getString("imagePath"))
-                        .categoryId(resultSet.getInt("categoryId"))
-                        .productId(resultSet.getInt("productId"))
-                        .primaryImage(resultSet.getInt("primaryImage"))
-                        .build();
-            }
-            resultSet.close();
-
-            preparedStatement.close();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        } finally {
-            connectionPool.closeConnection(connection);
-        }
-        return image;
+        return jdbcTemplate.queryForObject(GET_IMAGE_BY_ID_QUERY, (RowMapper<Image>) (rs, rowNum) -> Image.builder()
+                .id(rs.getInt("id"))
+                .imagePath(rs.getString("imagePath"))
+                .categoryId(rs.getInt("categoryId"))
+                .productId(rs.getInt("productId"))
+                .primaryImage(rs.getInt("primaryImage"))
+                .build(), id);
     }
 
     @Override
     public Image findByCategoryId(int categoryId) {
-        Image image = null;
-        Connection connection = connectionPool.getConnection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(GET_IMAGE_BY_CATEGORY_ID_QUERY);
-
-            preparedStatement.setInt(1, categoryId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                image = Image.builder()
-                        .id(resultSet.getInt("id"))
-                        .imagePath(resultSet.getString("imagePath"))
-                        .categoryId(resultSet.getInt("categoryId"))
-                        .build();
-            }
-            resultSet.close();
-
-            preparedStatement.close();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        } finally {
-            connectionPool.closeConnection(connection);
-        }
-        return image;
+        return jdbcTemplate.queryForObject(GET_IMAGE_BY_CATEGORY_ID_QUERY, (RowMapper<Image>) (rs, rowNum) -> Image.builder()
+                .id(rs.getInt("id"))
+                .imagePath(rs.getString("imagePath"))
+                .categoryId(rs.getInt("categoryId"))
+                .build(), categoryId);
     }
 
     @Override
     public List<Image> findByProductId(int productId) {
-        List<Image> images = new ArrayList<>();
-        Connection connection = connectionPool.getConnection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(GET_IMAGES_BY_PRODUCT_ID_QUERY);
-
-            preparedStatement.setInt(1, productId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                images.add(Image.builder()
-                        .id(resultSet.getInt("id"))
-                        .imagePath(resultSet.getString("imagePath"))
-                        .categoryId(resultSet.getInt("categoryId"))
-                        .productId(resultSet.getInt("productId"))
-                        .primaryImage(resultSet.getInt("primaryImage"))
-                        .build()
-                );
-            }
-            resultSet.close();
-
-            preparedStatement.close();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        } finally {
-            connectionPool.closeConnection(connection);
-        }
-        return images;
+        return jdbcTemplate.query(GET_IMAGES_BY_PRODUCT_ID_QUERY, (rs, rowNum) -> Image.builder()
+                .id(rs.getInt("id"))
+                .imagePath(rs.getString("imagePath"))
+                .categoryId(rs.getInt("categoryId"))
+                .productId(rs.getInt("productId"))
+                .primaryImage(rs.getInt("primaryImage"))
+                .build(), productId);
     }
 }

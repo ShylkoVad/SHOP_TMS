@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface BaseRepository<T extends BaseEntity> {
     Logger log = LoggerFactory.getLogger(BaseRepository.class);
-    ConnectionPool connectionPool = ConnectionPool.getInstance();
+//    ConnectionPool connectionPool = ConnectionPool.getInstance();
 
     T create(T entity);
 
