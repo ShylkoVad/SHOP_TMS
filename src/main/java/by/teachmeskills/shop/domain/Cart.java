@@ -1,6 +1,6 @@
 package by.teachmeskills.shop.domain;
 
-import jakarta.servlet.http.HttpServletRequest;
+//import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class Cart {
     public void clear() {
         products.clear();
     }
-    public void shoppingCartProducts(HttpServletRequest request, List <Product> products) {
-        request.setAttribute(SHOPPING_CART_PRODUCTS.getValue(), products);
-    }
+//    public void shoppingCartProducts(HttpServletRequest request, List <Product> products) {
+//        request.setAttribute(SHOPPING_CART_PRODUCTS.getValue(), products);
+//    }
 }

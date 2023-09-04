@@ -1,7 +1,6 @@
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="header.jsp" %>
 
 <html>
 <head>
@@ -18,10 +17,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
+    <style>
+        span.error {
+            color: red;
+        }
+    </style>
 
     <title>Регистрация</title>
 </head>
 <body>
+
+<jsp:include page="header.jsp"/>
 <div class="container">
     <div class="col-md-8 offset-md-4">
         <h2>Регистрация пользователя</h2>
@@ -30,40 +36,34 @@
             <input type="hidden" name="command" value="registration_user"/>
             <div class="form-group">
                 <label for="name">Имя:</label>
-                <input type="text" class="form-control w-25" id="name" placeholder="Введите имя" name="name"
-                       required>
-                <div class="invalid-feedback">Поле должно быть заполнено!</div>
+                <input type="text" class="form-control w-25" id="name" placeholder="Введите имя" name="name">
+                <span class="error">${nameError}</span>
             </div>
             <div class="form-group">
                 <label for="surname">Фамилия:</label>
-                <input type="text" class="form-control w-25" id="surname" placeholder="Введите фамилию" name="surname"
-                       required>
-                <div class="invalid-feedback">Поле должно быть заполнено!</div>
+                <input type="text" class="form-control w-25" id="surname" placeholder="Введите фамилию" name="surname">
+                <span class="error">${surnameError}</span>
             </div>
 
             <div class="form-group">
                 <label for="birthday">Дата рождения:</label>
-                <input type="date" class="form-control w-25" id="birthday" name="birthday"
-                       required>
-                <div class="invalid-feedback">Введите дату рождения!</div>
+                <input type="date" class="form-control w-25" id="birthday" name="birthday">
+                <span class="error">${birthdayError}</span>
             </div>
             <div class="form-group">
                 <label for="email">Почта:</label>
-                <input type="email" class="form-control w-25" id="email" placeholder="Введите email" name="email"
-                       required>
-                <div class="invalid-feedback">Поле должно быть заполнено!</div>
+                <input type="email" class="form-control w-25" id="email" placeholder="Введите email" name="email">
+                <span class="error">${emailError}</span>
             </div>
             <div class="form-group">
                 <label for="password">Пароль:</label>
-                <input type="text" class="form-control w-25" id="password" placeholder="Введите пароль" name="password"
-                       required>
-                <div class="invalid-feedback">Поле должно быть заполнено!</div>
+                <input type="text" class="form-control w-25" id="password" placeholder="Введите пароль" name="password">
+                <span class="error">${passwordError}</span>
             </div>
             <button id="loginBtn" type="submit" class="btn btn-outline-dark">Зарегистрироваться</button>
         </form>
         <a class="btn btn-outline-dark" href="/login">На страницу входа</a>
     </div>
 </div>
-<script src="../../script/script.js"></script>
 </body>
 </html>

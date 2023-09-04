@@ -19,7 +19,9 @@ public enum RequestParamsEnum {
     SHOPPING_CART("shopping_cart"),
     SHOPPING_CART_PRODUCTS("cartProductsList"),
     ORDERS("orders"),
-    SEARCH_PARAM("search_param");
+    SEARCH_PARAM("search_param"),
+    TIME_IN_MILLIS_PARAM("timeInMillis"),
+    ERROR_PARAM("error");
 
 
 

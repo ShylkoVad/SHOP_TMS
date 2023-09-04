@@ -1,7 +1,6 @@
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="header.jsp" %>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,6 +20,7 @@
     <title>Контакт</title>
 </head>
 <body>
+<jsp:include page="header.jsp" />
 <h3>Данная страница в разработке</h3>
 </body>
 </html>

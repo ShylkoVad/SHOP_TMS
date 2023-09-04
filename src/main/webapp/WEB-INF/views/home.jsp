@@ -1,9 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="header.jsp" %>
 <!DOCTYPE html>
-<html lang="ru">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -23,6 +21,7 @@
 </head>
 <body>
 
+<jsp:include page="header.jsp" />
 <div>
     <h2 class="fs-3; text-center">Каталог</h2>
     <div class="container">
@@ -30,12 +29,12 @@
             <div class="row d-flex justify-content-center">
                 <c:forEach items="${categories}" var="category">
                     <div class="card w-25 m-2 text-center" type="category">
-                        <a href='<c:url value="/category/${category.getId()}"/>'>
+                        <a href="${contextPath}/category/${category.getId()}"/>
                             <div class="card-body">
                                 <c:forEach items="${images}" var="image">
                                     <c:if test="${category.getId() == image.getCategoryId()}">
                                         <img class="card-img" style="max-height:150px; max-width:150px;"
-                                             src="${image.getImagePath()}"
+                                             src="${contextPath}${image.getImagePath()}"
                                              alt="Card image">
                                     </c:if>
                                 </c:forEach>

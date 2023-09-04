@@ -9,10 +9,10 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>F:\JAVA\TMS\SLF4J\logs\log.%d{yyyy-MM-dd}.log</file>
+        <file>D:\JAVA\TMS\SLF4J\logs\log_%d{yyyy-MM-dd}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <maxHistory>7</maxHistory>  <!-- время хранения файлов -->
-            <totalSizeCap>1MB</totalSizeCap>  <!-- Максимальный размер файлов -->
+            <totalSizeCap>10MB</totalSizeCap>  <!-- Максимальный размер файлов -->
         </rollingPolicy>
 
         <append>true</append>

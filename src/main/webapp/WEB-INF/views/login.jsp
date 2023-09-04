@@ -1,7 +1,4 @@
-<%--<%@ taglib prefix="c" uri="jakarta.tags.core" %>--%>
-<%--<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="header.jsp" %>
 
 <html>
 <head>
@@ -19,11 +16,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
+    <style>
+        span.error {
+            color: red;
+        }
+    </style>
 
-    <title>Магазин</title>
+    <title>Страница регистрации</title>
 </head>
 
 <body>
+<jsp:include page="header.jsp" />
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3 offset-4">
@@ -34,14 +37,14 @@
                     <label for="email">Имя пользователя:</label>
                     <input type="text" class="form-control" id="email" placeholder="Введите email" name="email"
                            required>
-                    <div class="invalid-feedback">Имя пользователя должно быть введено!</div>
+                    <span class="error">${emailError}</span>
                 </div>
                 <div class="form-group">
                     <label for="password">Пароль:</label>
                     <input type="password" class="form-control" id="password" placeholder="Введите пароль"
                            name="password"
                            required>
-                    <div class="invalid-feedback">Пароль должен быть введен!</div>
+                    <span class="error">${passwordError}</span>
                 </div>
                 <button id="loginBtn" type="submit" class="btn btn-outline-dark">Войти</button>
             </form>

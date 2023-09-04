@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS shop.users (
     );
 
 INSERT INTO shop.users(name, surname, birthday, balance, email, password, street, accommodation_number, flat_number, phone_number)
-VALUES ('Вадим', 'Шилько', '1984-09-08', 150.00, 'shilko_vad@mail.ru', '1234', '', '', '', '');
+VALUES ('Вадим', 'Шилько', '1984-09-08', 150.00, 'shilko_vad@mail.ru', 'qQ1@', '', '', '', '');
 --------------------------------------------------------
 --  Table shop.categories
 --------------------------------------------------------

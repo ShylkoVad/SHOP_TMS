@@ -1,13 +1,12 @@
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="header.jsp" %>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../../css/home.css">
-    <%--    <link rel="stylesheet" type="text/css" href="css/product.css">--%>
+<%--    <link rel="stylesheet" type="text/css" href="css/product.css">--%>
     <link rel="stylesheet" type="text/css" href="../../css/search.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -23,6 +22,8 @@
     <title>Страница поиска</title>
 </head>
 <body>
+
+<jsp:include page="header.jsp"/>
 <div class="container">
     <h1 style="text-align: center">Результаты поиска:</h1>
 

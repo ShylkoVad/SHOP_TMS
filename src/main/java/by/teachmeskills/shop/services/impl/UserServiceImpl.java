@@ -4,6 +4,8 @@ import by.teachmeskills.shop.domain.Category;
 import by.teachmeskills.shop.domain.Image;
 import by.teachmeskills.shop.domain.Order;
 import by.teachmeskills.shop.domain.User;
+import by.teachmeskills.shop.exceptions.LoginException;
+import by.teachmeskills.shop.exceptions.RegistrationException;
 import by.teachmeskills.shop.repositories.UserRepository;
 import by.teachmeskills.shop.services.CategoryService;
 import by.teachmeskills.shop.services.ImageService;
@@ -30,6 +32,7 @@ import static by.teachmeskills.shop.enums.RequestParamsEnum.NAME;
 import static by.teachmeskills.shop.enums.RequestParamsEnum.ORDERS;
 import static by.teachmeskills.shop.enums.RequestParamsEnum.SURNAME;
 import static by.teachmeskills.shop.enums.RequestParamsEnum.USER;
+
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
@@ -81,7 +84,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ModelAndView authenticate(User user) {
+    public ModelAndView authenticate(User user) throws LoginException {
         ModelMap model = new ModelMap();
 
         if (user != null && user.getEmail() != null && user.getPassword() != null) {
@@ -101,32 +104,30 @@ public class UserServiceImpl implements UserService {
 
                 return new ModelAndView(HOME_PAGE.getPath(), model);
             } else {
-                return new ModelAndView(LOGIN_PAGE.getPath(), model);
+                throw new LoginException("Пользователь с таким именем отсутствует");
+//                return new ModelAndView(LOGIN_PAGE.getPath(), model);
             }
         }
         return new ModelAndView(LOGIN_PAGE.getPath(), model);
     }
 
     @Override
-    public ModelAndView createUser(User user) {
-        if (ValidatorUtils.validateRegistration(user.getEmail(), user.getName(),
-                user.getSurname(), user.getPassword(), String.valueOf(user.getBirthday()))) {
-            ModelMap model = new ModelMap();
-            User createdUser = create(user);
-            if (createdUser != null) {
-                List<Category> categories = categoryService.read();
-                List<Image> images = new ArrayList<>();
-                for (Category category : categories) {
-                    images.add(imageService.getImageByCategoryId(category.getId()));
-                }
-                model.addAttribute(CATEGORIES.getValue(), categories);
-                model.addAttribute(IMAGES.getValue(), images);
-                return new ModelAndView(HOME_PAGE.getPath(), model);
-            } else {
-                return new ModelAndView(REGISTRATION_PAGE.getPath());
+    public ModelAndView createUser(User user) throws RegistrationException {
+        ModelMap model = new ModelMap();
+        User createdUser = create(user);
+        if (createdUser != null) {
+            List<Category> categories = categoryService.read();
+            List<Image> images = new ArrayList<>();
+            for (Category category : categories) {
+                images.add(imageService.getImageByCategoryId(category.getId()));
             }
+            model.addAttribute(CATEGORIES.getValue(), categories);
+            model.addAttribute(IMAGES.getValue(), images);
+            return new ModelAndView(HOME_PAGE.getPath(), model);
+        } else {
+            throw new RegistrationException("При регистрации произошла ошибка. Попробуйте снова.");
+//            return new ModelAndView(REGISTRATION_PAGE.getPath());
         }
-        return new ModelAndView(REGISTRATION_PAGE.getPath());
     }
 
     @Override

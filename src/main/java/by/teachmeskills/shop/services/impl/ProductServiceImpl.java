@@ -6,7 +6,7 @@ import by.teachmeskills.shop.domain.Product;
 import by.teachmeskills.shop.repositories.ProductRepository;
 import by.teachmeskills.shop.services.ImageService;
 import by.teachmeskills.shop.services.ProductService;
-import jakarta.servlet.http.HttpServletRequest;
+//import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
@@ -63,27 +63,27 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findByCategoryId(categoryId);
     }
 
-    @Override
-    public void getProduct(HttpServletRequest request, int categoryId) {
-        List<Product> products = productRepository.findByCategoryId(categoryId);
-        List<List<Image>> images = new ArrayList<>();
-        for (Product product : products) {
-            images.add(imageService.getImagesByProductId(product.getId()));
-        }
-        request.setAttribute(PRODUCTS.getValue(), products);
-        request.setAttribute(IMAGES.getValue(), images.stream().flatMap(Collection::stream).collect(Collectors.toList()));
-    }
-
-    @Override
-    public void getProductShoppingCart(HttpServletRequest request, Cart shoppingCart) {
-        List<Product> products = shoppingCart.getProducts();
-        List<List<Image>> images = new ArrayList<>();
-        for (Product product : products) {
-            images.add(imageService.getImagesByProductId(product.getId()));
-        }
-        shoppingCart.shoppingCartProducts(request, products);
-        request.setAttribute(IMAGES.getValue(), images.stream().flatMap(Collection::stream).collect(Collectors.toList()));
-    }
+//    @Override
+//    public void getProduct(HttpServletRequest request, int categoryId) {
+//        List<Product> products = productRepository.findByCategoryId(categoryId);
+//        List<List<Image>> images = new ArrayList<>();
+//        for (Product product : products) {
+//            images.add(imageService.getImagesByProductId(product.getId()));
+//        }
+//        request.setAttribute(PRODUCTS.getValue(), products);
+//        request.setAttribute(IMAGES.getValue(), images.stream().flatMap(Collection::stream).collect(Collectors.toList()));
+//    }
+//
+//    @Override
+//    public void getProductShoppingCart(HttpServletRequest request, Cart shoppingCart) {
+//        List<Product> products = shoppingCart.getProducts();
+//        List<List<Image>> images = new ArrayList<>();
+//        for (Product product : products) {
+//            images.add(imageService.getImagesByProductId(product.getId()));
+//        }
+//        shoppingCart.shoppingCartProducts(request, products);
+//        request.setAttribute(IMAGES.getValue(), images.stream().flatMap(Collection::stream).collect(Collectors.toList()));
+//    }
 
     @Override
     public ModelAndView getProductsBySearchParameter(String parameter) {

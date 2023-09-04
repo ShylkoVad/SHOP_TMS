@@ -1,7 +1,6 @@
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="header.jsp" %>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,13 +22,13 @@
     <title>Личный кабинет</title>
 </head>
 <body>
-<div class="container">
 
+<jsp:include page="header.jsp" />
+<div class="container">
 
     <button class="tablink m-2" onclick="openTab('personalArea', this, 'white')" id="defaultOpen">Личный кабинет</button>
     <button class="tablink m-2" onclick="openTab('historyOrders', this, 'white')">История заказов</button>
     <button class="tablink m-2" onclick="openTab('updateUserDataImpl', this, 'white')">Обновление данных</button>
-
 
     <div id="personalArea" class="tabcontent text-start">
         <div class="border border-dark-subtle m-5 rounded-4">
