@@ -12,10 +12,6 @@ public interface ProductService extends BaseService<Product> {
 
     List<Product> getProductsByCategoryId(int categoryId);
 
-//    void getProduct(HttpServletRequest request, int categoryId);
-//
-//    void getProductShoppingCart(HttpServletRequest request, Cart shoppingCart);
-
     ModelAndView getProductsBySearchParameter(String parameter);
 
     ModelAndView getProductData(int id);

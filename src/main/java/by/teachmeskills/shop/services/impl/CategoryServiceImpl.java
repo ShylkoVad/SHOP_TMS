@@ -58,11 +58,15 @@ public class CategoryServiceImpl implements CategoryService {
     public ModelAndView getCategoryById(int id) {
         ModelMap model = new ModelMap();
         Category category = categoryRepository.findById(id);
-        List<Product> products = productService.getProductsByCategoryId(category.getId());
-        List<List<Image>> images = new ArrayList<>();
 
-        for (Product product : products) {
-            images.add(imageService.getImagesByProductId(product.getId()));
+        if (category != null) {
+
+            List<Product> products = productService.getProductsByCategoryId(category.getId());
+            List<List<Image>> images = new ArrayList<>();
+
+            for (Product product : products) {
+                images.add(imageService.getImagesByProductId(product.getId()));
+            }
             model.addAttribute(PRODUCTS.getValue(), products);
             model.addAttribute(IMAGES.getValue(),
                     images.stream().flatMap(Collection::stream).collect(Collectors.toList()));

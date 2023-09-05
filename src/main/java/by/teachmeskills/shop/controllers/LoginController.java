@@ -1,12 +1,9 @@
 package by.teachmeskills.shop.controllers;
 
 import by.teachmeskills.shop.domain.User;
-import by.teachmeskills.shop.enums.PagesPathEnum;
-import by.teachmeskills.shop.exceptions.ErrorView;
 import by.teachmeskills.shop.exceptions.LoginException;
 import by.teachmeskills.shop.services.UserService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -36,12 +33,6 @@ public class LoginController {
         return new ModelAndView(LOGIN_PAGE.getPath());
     }
 
-//    @GetMapping("/registration")
-//    public ModelAndView openRegistrationPage() {
-//        return new ModelAndView(PagesPathEnum.REGISTRATION_PAGE.getPath());
-//    }
-
-//    @ErrorView(value = "error", status = HttpStatus.FORBIDDEN)
     @PostMapping
     public ModelAndView login(@ModelAttribute(USER) @Valid User user, BindingResult bindingResult, ModelAndView modelAndView) throws LoginException {
         if (bindingResult.hasErrors()) {

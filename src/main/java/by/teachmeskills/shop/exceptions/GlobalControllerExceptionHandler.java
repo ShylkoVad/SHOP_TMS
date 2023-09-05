@@ -22,7 +22,7 @@ public class GlobalControllerExceptionHandler {
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler({LoginException.class})
-    public ModelAndView handlerLoginException(Exception ex) {
+    public ModelAndView handleLoginException(Exception ex) {
         ModelMap modelMap = new ModelMap();
         modelMap.addAttribute(ERROR_PARAM.getValue(), ex.getMessage());
         return new ModelAndView(ERROR_PAGE.getPath(), modelMap);

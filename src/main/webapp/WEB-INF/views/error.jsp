@@ -17,9 +17,9 @@
 <h2>Ошибка</h2>
 
 <div class="container-fluid mb-4">
-    <h1 class="alert alert-danger" role="alert">
+    <h2 class="alert alert-danger" role="alert">
         ${error}
-    </h1>
+    </h2>
     <a href="${contextPath}/login">
         <button type="button" class="btn btn-danger">Попробуйте еще раз...</button>
     </a>

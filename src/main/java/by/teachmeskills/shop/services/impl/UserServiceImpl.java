@@ -11,7 +11,6 @@ import by.teachmeskills.shop.services.CategoryService;
 import by.teachmeskills.shop.services.ImageService;
 import by.teachmeskills.shop.services.OrderService;
 import by.teachmeskills.shop.services.UserService;
-import by.teachmeskills.shop.utils.ValidatorUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
@@ -21,8 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static by.teachmeskills.shop.enums.PagesPathEnum.HOME_PAGE;
-import static by.teachmeskills.shop.enums.PagesPathEnum.LOGIN_PAGE;
-import static by.teachmeskills.shop.enums.PagesPathEnum.REGISTRATION_PAGE;
 import static by.teachmeskills.shop.enums.PagesPathEnum.USER_ACCOUNT_PAGE;
 import static by.teachmeskills.shop.enums.RequestParamsEnum.BIRTHDAY;
 import static by.teachmeskills.shop.enums.RequestParamsEnum.CATEGORIES;
@@ -105,10 +102,9 @@ public class UserServiceImpl implements UserService {
                 return new ModelAndView(HOME_PAGE.getPath(), model);
             } else {
                 throw new LoginException("Пользователь с таким именем отсутствует");
-//                return new ModelAndView(LOGIN_PAGE.getPath(), model);
             }
         }
-        return new ModelAndView(LOGIN_PAGE.getPath(), model);
+        throw new LoginException("Введены данные неверно");
     }
 
     @Override
@@ -118,6 +114,7 @@ public class UserServiceImpl implements UserService {
         if (createdUser != null) {
             List<Category> categories = categoryService.read();
             List<Image> images = new ArrayList<>();
+
             for (Category category : categories) {
                 images.add(imageService.getImageByCategoryId(category.getId()));
             }
@@ -125,8 +122,7 @@ public class UserServiceImpl implements UserService {
             model.addAttribute(IMAGES.getValue(), images);
             return new ModelAndView(HOME_PAGE.getPath(), model);
         } else {
-            throw new RegistrationException("При регистрации произошла ошибка. Попробуйте снова.");
-//            return new ModelAndView(REGISTRATION_PAGE.getPath());
+            throw new RegistrationException("При регистрации произошла ошибка.");
         }
     }
 

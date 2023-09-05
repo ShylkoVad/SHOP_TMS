@@ -29,12 +29,12 @@
             <div class="card mb-5 offset-1 cardCategory" type="product">
                 <div class="row g-0">
                     <div class="col-md-2">
-                        <a href='<c:url value="/product/${product.getId()}"/>'>
+                        <a href='<c:url value="${contextPath}/product/${product.getId()}"/>'>
 
                             <c:forEach items="${images}" var="image">
                                 <c:if test="${product.getId() == image.getProductId() && image.getPrimaryImage() == 1}">
                                     <img class="img-fluid rounded-start ml-3 ingCategory"
-                                         src="${image.getImagePath()}" alt="Card image">
+                                         src="${contextPath}${image.getImagePath()}" alt="Card image">
                                 </c:if>
                             </c:forEach>
                         </a>

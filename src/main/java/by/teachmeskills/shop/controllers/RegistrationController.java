@@ -1,12 +1,10 @@
 package by.teachmeskills.shop.controllers;
 
 import by.teachmeskills.shop.domain.User;
-import by.teachmeskills.shop.enums.PagesPathEnum;
 import by.teachmeskills.shop.exceptions.RegistrationException;
 import by.teachmeskills.shop.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,15 +33,6 @@ public class RegistrationController {
         return new ModelAndView(REGISTRATION_PAGE.getPath());
     }
 
-//    @GetMapping("/login")
-//    public ModelAndView openLoginPage() {
-//        return new ModelAndView(PagesPathEnum.LOGIN_PAGE.getPath());
-//    }
-
-    //    @PostMapping
-//    public ModelAndView registration(@ModelAttribute(USER) User user) {
-//        return userService.createUser(user);
-//    }
     @PostMapping
     public ModelAndView registration(@ModelAttribute(USER) @Valid User user, BindingResult bindingResult, ModelAndView modelAndView) throws RegistrationException {
         if (bindingResult.hasErrors()) {
@@ -65,7 +54,7 @@ public class RegistrationController {
 
     private void populateError(String field, ModelAndView modelAndView, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors(field)) {
-            modelAndView.addObject(field + "Error", Objects.requireNonNull(bindingResult.getFieldError(field))
+            modelAndView.addObject(field + "error", Objects.requireNonNull(bindingResult.getFieldError(field))
                     .getDefaultMessage());
         }
     }

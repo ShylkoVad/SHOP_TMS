@@ -1,12 +1,10 @@
 package by.teachmeskills.shop.services.impl;
 
-import by.teachmeskills.shop.domain.Cart;
 import by.teachmeskills.shop.domain.Image;
 import by.teachmeskills.shop.domain.Product;
 import by.teachmeskills.shop.repositories.ProductRepository;
 import by.teachmeskills.shop.services.ImageService;
 import by.teachmeskills.shop.services.ProductService;
-//import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,7 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static by.teachmeskills.shop.enums.PagesPathEnum.PRODUCT_PAGE;
@@ -63,28 +60,6 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findByCategoryId(categoryId);
     }
 
-//    @Override
-//    public void getProduct(HttpServletRequest request, int categoryId) {
-//        List<Product> products = productRepository.findByCategoryId(categoryId);
-//        List<List<Image>> images = new ArrayList<>();
-//        for (Product product : products) {
-//            images.add(imageService.getImagesByProductId(product.getId()));
-//        }
-//        request.setAttribute(PRODUCTS.getValue(), products);
-//        request.setAttribute(IMAGES.getValue(), images.stream().flatMap(Collection::stream).collect(Collectors.toList()));
-//    }
-//
-//    @Override
-//    public void getProductShoppingCart(HttpServletRequest request, Cart shoppingCart) {
-//        List<Product> products = shoppingCart.getProducts();
-//        List<List<Image>> images = new ArrayList<>();
-//        for (Product product : products) {
-//            images.add(imageService.getImagesByProductId(product.getId()));
-//        }
-//        shoppingCart.shoppingCartProducts(request, products);
-//        request.setAttribute(IMAGES.getValue(), images.stream().flatMap(Collection::stream).collect(Collectors.toList()));
-//    }
-
     @Override
     public ModelAndView getProductsBySearchParameter(String parameter) {
         ModelMap model = new ModelMap();
@@ -110,7 +85,7 @@ public class ProductServiceImpl implements ProductService {
     public ModelAndView getProductData(int id) {
         ModelMap model = new ModelMap();
         Product product = productRepository.findById(id);
-        if (Optional.ofNullable(product).isPresent()) {
+        if (product != null) {
             model.addAttribute(PRODUCT.getValue(), product);
             model.addAttribute(IMAGES.getValue(), imageService.getImagesByProductId(id));
         }
