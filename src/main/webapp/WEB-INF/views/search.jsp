@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../../css/home.css">
-<%--    <link rel="stylesheet" type="text/css" href="css/product.css">--%>
+    <link rel="stylesheet" type="text/css" href="../../css/product.css">
     <link rel="stylesheet" type="text/css" href="../../css/search.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -39,7 +39,7 @@
                                     <c:if test="${product.getId() == image.getProductId() && image.getPrimaryImage() == 1}">
                                         <img class="d-block img-fluid rounded-start m-3"
                                              style="max-height:200px; width: auto;"
-                                             src="${image.getImagePath()}" alt="Card image">
+                                             src="${contextPath}/${image.getImagePath()}" alt="Card image">
                                     </c:if>
                                 </c:forEach>
                             </a>

@@ -1,6 +1,6 @@
 package by.teachmeskills.shop.controllers;
 
-import by.teachmeskills.shop.exceptions.EntityNotFoundException;
+import by.teachmeskills.shop.exceptions.EntityOperationException;
 import by.teachmeskills.shop.services.ProductService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +18,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ModelAndView openProductPage(@PathVariable int id) throws EntityNotFoundException {
+    public ModelAndView openProductPage(@PathVariable int id) throws EntityOperationException {
         return productService.getProductData(id);
     }
 }

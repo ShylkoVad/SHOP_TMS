@@ -1,7 +1,7 @@
 package by.teachmeskills.shop.controllers;
 
 import by.teachmeskills.shop.domain.User;
-import by.teachmeskills.shop.exceptions.EntityNotFoundException;
+import by.teachmeskills.shop.exceptions.EntityOperationException;
 import by.teachmeskills.shop.exceptions.LoginException;
 import by.teachmeskills.shop.services.UserService;
 import jakarta.validation.Valid;
@@ -35,13 +35,13 @@ public class LoginController {
     }
 
     @PostMapping
-    public ModelAndView login(@ModelAttribute(USER) @Valid User user, BindingResult bindingResult, ModelAndView modelAndView) throws LoginException, EntityNotFoundException {
-        if (bindingResult.hasErrors()) {
-            populateError("email", modelAndView, bindingResult);
-            populateError("password", modelAndView, bindingResult);
-            modelAndView.setViewName(LOGIN_PAGE.getPath());
-            return modelAndView;
-        }
+    public ModelAndView login(@ModelAttribute(USER) @Valid User user, BindingResult bindingResult, ModelAndView modelAndView) throws LoginException, EntityOperationException {
+//        if (bindingResult.hasErrors()) {
+//            populateError("email", modelAndView, bindingResult);
+//            populateError("password", modelAndView, bindingResult);
+//            modelAndView.setViewName(LOGIN_PAGE.getPath());
+//            return modelAndView;
+//        }
         return userService.authenticate(user);
     }
 
