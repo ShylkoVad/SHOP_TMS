@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 public interface BaseRepository<T extends BaseEntity> {
-    Logger log = LoggerFactory.getLogger(BaseRepository.class);
 
     T create(T entity);
 

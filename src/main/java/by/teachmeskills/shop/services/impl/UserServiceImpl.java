@@ -4,6 +4,7 @@ import by.teachmeskills.shop.domain.Category;
 import by.teachmeskills.shop.domain.Image;
 import by.teachmeskills.shop.domain.Order;
 import by.teachmeskills.shop.domain.User;
+import by.teachmeskills.shop.exceptions.EntityNotFoundException;
 import by.teachmeskills.shop.exceptions.LoginException;
 import by.teachmeskills.shop.exceptions.RegistrationException;
 import by.teachmeskills.shop.repositories.UserRepository;
@@ -71,17 +72,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByEmailAndPassword(String email, String password) {
+    public User getUserByEmailAndPassword(String email, String password) throws EntityNotFoundException {
         return userRepository.findByEmailAndPassword(email, password);
     }
 
     @Override
-    public User getUserByEmail(String email) {
+    public User getUserByEmail(String email) throws EntityNotFoundException {
         return userRepository.findByEmail(email);
     }
 
     @Override
-    public ModelAndView authenticate(User user) throws LoginException {
+    public ModelAndView authenticate(User user) throws LoginException, EntityNotFoundException {
         ModelMap model = new ModelMap();
 
         if (user != null && user.getEmail() != null && user.getPassword() != null) {
@@ -109,9 +110,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ModelAndView createUser(User user) throws RegistrationException {
-        ModelMap model = new ModelMap();
+
         User createdUser = create(user);
         if (createdUser != null) {
+            ModelMap model = new ModelMap();
             List<Category> categories = categoryService.read();
             List<Image> images = new ArrayList<>();
 

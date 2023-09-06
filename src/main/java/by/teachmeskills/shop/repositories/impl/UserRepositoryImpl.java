@@ -85,10 +85,10 @@ public class UserRepositoryImpl implements UserRepository {
                 .id(rs.getInt("id"))
                 .name(rs.getString("name"))
                 .surname(rs.getString("surname"))
-                .email(rs.getString("email"))
-                .password(rs.getString("password"))
                 .birthday(rs.getTimestamp("birthday").toLocalDateTime().toLocalDate())
                 .balance(rs.getInt("balance"))
+                .email(rs.getString("email"))
+                .password(rs.getString("password"))
                 .build(), email, password);
     }
 
@@ -99,10 +99,10 @@ public class UserRepositoryImpl implements UserRepository {
                 .id(rs.getInt("id"))
                 .name(rs.getString("name"))
                 .surname(rs.getString("surname"))
-                .email(rs.getString("email"))
-                .password(rs.getString("password"))
                 .birthday(rs.getTimestamp("birthday").toLocalDateTime().toLocalDate())
                 .balance(rs.getInt("balance"))
+                .email(rs.getString("email"))
+                .password(rs.getString("password"))
                 .build(), email);
     }
 }

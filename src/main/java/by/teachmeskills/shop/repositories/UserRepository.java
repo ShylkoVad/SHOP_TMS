@@ -1,11 +1,12 @@
 package by.teachmeskills.shop.repositories;
 
 import by.teachmeskills.shop.domain.User;
+import by.teachmeskills.shop.exceptions.EntityNotFoundException;
 
 public interface UserRepository extends BaseRepository<User> {
     User findById(int id);
 
-    User findByEmailAndPassword(String email, String password);
+    User findByEmailAndPassword(String email, String password) throws EntityNotFoundException;
 
-    User findByEmail(String email);
+    User findByEmail(String email) throws EntityNotFoundException;
 }

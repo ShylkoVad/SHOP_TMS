@@ -1,6 +1,7 @@
 package by.teachmeskills.shop.controllers;
 
 import by.teachmeskills.shop.domain.User;
+import by.teachmeskills.shop.exceptions.EntityNotFoundException;
 import by.teachmeskills.shop.exceptions.RegistrationException;
 import by.teachmeskills.shop.services.UserService;
 import jakarta.validation.Valid;
@@ -34,7 +35,7 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public ModelAndView registration(@ModelAttribute(USER) @Valid User user, BindingResult bindingResult, ModelAndView modelAndView) throws RegistrationException {
+    public ModelAndView registration(@ModelAttribute(USER) @Valid User user, BindingResult bindingResult, ModelAndView modelAndView) throws RegistrationException, EntityNotFoundException {
         if (bindingResult.hasErrors()) {
             populateError("name", modelAndView, bindingResult);
             populateError("surname", modelAndView, bindingResult);

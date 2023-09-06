@@ -21,7 +21,7 @@ public class GlobalControllerExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    @ExceptionHandler({LoginException.class})
+    @ExceptionHandler({LoginException.class, EntityNotFoundException.class})
     public ModelAndView handleLoginException(Exception ex) {
         ModelMap modelMap = new ModelMap();
         modelMap.addAttribute(ERROR_PARAM.getValue(), ex.getMessage());

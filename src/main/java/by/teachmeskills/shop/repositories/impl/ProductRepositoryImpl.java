@@ -28,6 +28,8 @@ public class ProductRepositoryImpl implements ProductRepository {
             " categoryid = ?,  WHERE id = ?";
     private static final String GET_PRODUCTS_SEARCHED = "SELECT * FROM products WHERE name LIKE ? OR description LIKE ?";
 
+    private static final String UPDATE_PRODUCT_PRICE_QUERY = "UPDATE products SET price = ? WHERE id = ?";
+
     public ProductRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -59,8 +61,10 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Product update(Product entity) {
-        return jdbcTemplate.execute(UPDATE_PRODUCT_QUERY, (PreparedStatementCallback<Product>) ps -> {
-            ps.setDouble(1, entity.getPrice());
+//        return jdbcTemplate.execute(UPDATE_PRODUCT_QUERY, (PreparedStatementCallback<Product>) ps -> {
+            return jdbcTemplate.execute(UPDATE_PRODUCT_PRICE_QUERY, (PreparedStatementCallback<Product>) ps -> {
+
+                ps.setDouble(1, entity.getPrice());
             ps.setInt(2, entity.getId());
             ps.execute();
             return entity;
@@ -96,12 +100,21 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public List<Product> findBySearchParameter(String searchString) {
-        return jdbcTemplate.query(GET_PRODUCTS_SEARCHED, (rs, rowNum) -> Product.builder()
+        return jdbcTemplate.query(generateSearchQuery(searchString), (rs, rowNum) -> Product.builder()
                 .id(rs.getInt("id"))
                 .name(rs.getString("name"))
                 .description(rs.getString("description"))
                 .price(rs.getDouble("price"))
                 .categoryId(rs.getInt("categoryId"))
                 .build());
+    }
+    private String generateSearchQuery(String searchParameter) {
+        StringBuilder query = new StringBuilder("SELECT * FROM products WHERE (LOWER (name) LIKE '%");
+
+        return query.append(searchParameter)
+                .append("%' OR LOWER (description) LIKE '%")
+                .append(searchParameter)
+                .append("%') ORDER BY name")
+                .toString();
     }
 }

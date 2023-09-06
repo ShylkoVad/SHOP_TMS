@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class Cart {
     private Map<Integer, Product> products;
-    @Getter
+//    @Getter
     private double totalPrice = 0;
 
     public Cart() {
@@ -31,6 +31,9 @@ public class Cart {
         return new ArrayList<>(products.values());
     }
 
+    public double getTotalPrice() {
+        return totalPrice;
+    }
     public void clear() {
         products.clear();
     }

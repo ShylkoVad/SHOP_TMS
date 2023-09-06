@@ -1,6 +1,7 @@
 package by.teachmeskills.shop.controllers;
 
 import by.teachmeskills.shop.domain.User;
+import by.teachmeskills.shop.exceptions.EntityNotFoundException;
 import by.teachmeskills.shop.exceptions.LoginException;
 import by.teachmeskills.shop.services.UserService;
 import jakarta.validation.Valid;
@@ -34,7 +35,7 @@ public class LoginController {
     }
 
     @PostMapping
-    public ModelAndView login(@ModelAttribute(USER) @Valid User user, BindingResult bindingResult, ModelAndView modelAndView) throws LoginException {
+    public ModelAndView login(@ModelAttribute(USER) @Valid User user, BindingResult bindingResult, ModelAndView modelAndView) throws LoginException, EntityNotFoundException {
         if (bindingResult.hasErrors()) {
             populateError("email", modelAndView, bindingResult);
             populateError("password", modelAndView, bindingResult);
@@ -43,10 +44,6 @@ public class LoginController {
         }
         return userService.authenticate(user);
     }
-//@PostMapping
-//public ModelAndView login(@ModelAttribute(USER) User user) {
-//    return userService.authenticate(user);
-//}
 
     @ModelAttribute(USER)
     public User setUpUserForm() {
