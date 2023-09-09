@@ -21,13 +21,10 @@ public class GlobalControllerExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    @ExceptionHandler({LoginException.class, EntityOperationException.class})
-    public ModelAndView handleLoginException(Exception ex) {
+    @ExceptionHandler({EntityOperationException.class})
+    public ModelAndView handleEntityOperationException(Exception ex) {
         ModelMap modelMap = new ModelMap();
         modelMap.addAttribute(ERROR_PARAM.getValue(), ex.getMessage());
-        ModelAndView model = new ModelAndView();
-        model.setViewName(ERROR_PAGE.getPath());
-        model.addAllObjects(modelMap);
-        return model;
+        return new ModelAndView(ERROR_PAGE.getPath(), modelMap);
     }
 }

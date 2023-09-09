@@ -55,7 +55,7 @@ public class RegistrationController {
 
     private void populateError(String field, ModelAndView modelAndView, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors(field)) {
-            modelAndView.addObject(field + "error", Objects.requireNonNull(bindingResult.getFieldError(field))
+            modelAndView.addObject(field + "Error", Objects.requireNonNull(bindingResult.getFieldError(field))
                     .getDefaultMessage());
         }
     }

@@ -2,7 +2,6 @@ package by.teachmeskills.shop.services;
 
 import by.teachmeskills.shop.domain.User;
 import by.teachmeskills.shop.exceptions.EntityOperationException;
-import by.teachmeskills.shop.exceptions.LoginException;
 import by.teachmeskills.shop.exceptions.RegistrationException;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -12,7 +11,7 @@ public interface UserService extends BaseService<User> {
     User getUserByEmailAndPassword(String email, String password) throws EntityOperationException;
 
     User getUserByEmail(String email) throws EntityOperationException;
-    ModelAndView authenticate(User user) throws LoginException, EntityOperationException;
+    ModelAndView authenticate(User user);
 
     ModelAndView createUser(User user) throws RegistrationException, EntityOperationException;
 

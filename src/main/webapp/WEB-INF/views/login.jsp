@@ -7,7 +7,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link  href="${contextPath}/css/dropdown.css" rel="stylesheet">
+    <link href="${contextPath}/css/dropdown.css" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -28,7 +28,7 @@
 </head>
 
 <body>
-<jsp:include page="header.jsp" />
+<jsp:include page="header.jsp"/>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3 offset-4">
@@ -37,16 +37,14 @@
                 <input type="hidden" name="command" value="login"/>
                 <div class="form-group">
                     <label for="email">Имя пользователя:</label>
-                    <input type="text" class="form-control" id="email" placeholder="Введите email" name="email"
-                           >
-<%--                    <span class="error">${emailError}</span>--%>
+                    <input type="text" class="form-control" id="email" placeholder="Введите email" name="email">
+                    <span class="error">${emailError}</span>
                 </div>
                 <div class="form-group">
                     <label for="password">Пароль:</label>
                     <input type="password" class="form-control" id="password" placeholder="Введите пароль"
-                           name="password"
-                          >
-<%--                    <span class="error">${passwordError}</span>--%>
+                           name="password">
+                    <span class="error">${passwordError}</span>
                 </div>
                 <button id="loginBtn" type="submit" class="btn btn-outline-dark">Войти</button>
             </form>
@@ -54,6 +52,5 @@
         </div>
     </div>
 </div>
-<%--<script src="script/script.js"></script>--%>
 </body>
 </html>

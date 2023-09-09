@@ -4,8 +4,6 @@ import by.teachmeskills.shop.domain.Category;
 import by.teachmeskills.shop.domain.Image;
 import by.teachmeskills.shop.domain.Order;
 import by.teachmeskills.shop.domain.User;
-import by.teachmeskills.shop.exceptions.EntityOperationException;
-import by.teachmeskills.shop.exceptions.LoginException;
 import by.teachmeskills.shop.exceptions.RegistrationException;
 import by.teachmeskills.shop.repositories.UserRepository;
 import by.teachmeskills.shop.services.CategoryService;
@@ -21,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static by.teachmeskills.shop.enums.PagesPathEnum.HOME_PAGE;
+import static by.teachmeskills.shop.enums.PagesPathEnum.LOGIN_PAGE;
 import static by.teachmeskills.shop.enums.PagesPathEnum.USER_ACCOUNT_PAGE;
 import static by.teachmeskills.shop.enums.RequestParamsEnum.BIRTHDAY;
 import static by.teachmeskills.shop.enums.RequestParamsEnum.CATEGORIES;
@@ -72,17 +71,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByEmailAndPassword(String email, String password) throws EntityOperationException {
+    public User getUserByEmailAndPassword(String email, String password) {
         return userRepository.findByEmailAndPassword(email, password);
     }
 
     @Override
-    public User getUserByEmail(String email) throws EntityOperationException {
+    public User getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
     @Override
-    public ModelAndView authenticate(User user) throws LoginException, EntityOperationException {
+    public ModelAndView authenticate(User user) {
         ModelMap model = new ModelMap();
 
         if (user != null && user.getEmail() != null && user.getPassword() != null) {
@@ -102,10 +101,10 @@ public class UserServiceImpl implements UserService {
 
                 return new ModelAndView(HOME_PAGE.getPath(), model);
             } else {
-                throw new LoginException("Пользователь с таким именем отсутствует");
+                return new ModelAndView(LOGIN_PAGE.getPath(), model);
             }
         }
-        throw new LoginException("Введены данные неверно");
+        return new ModelAndView(LOGIN_PAGE.getPath(), model);
     }
 
     @Override

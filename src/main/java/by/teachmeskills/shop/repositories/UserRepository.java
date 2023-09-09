@@ -6,7 +6,7 @@ import by.teachmeskills.shop.exceptions.EntityOperationException;
 public interface UserRepository extends BaseRepository<User> {
     User findById(int id);
 
-    User findByEmailAndPassword(String email, String password) throws EntityOperationException;
+    User findByEmailAndPassword(String email, String password);
 
-    User findByEmail(String email) throws EntityOperationException;
+    User findByEmail(String email);
 }
