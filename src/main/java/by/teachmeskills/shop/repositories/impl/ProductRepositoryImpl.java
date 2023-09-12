@@ -61,7 +61,6 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Product update(Product entity) {
-//        return jdbcTemplate.execute(UPDATE_PRODUCT_QUERY, (PreparedStatementCallback<Product>) ps -> {
             return jdbcTemplate.execute(UPDATE_PRODUCT_PRICE_QUERY, (PreparedStatementCallback<Product>) ps -> {
 
                 ps.setDouble(1, entity.getPrice());
