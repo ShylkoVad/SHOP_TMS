@@ -36,7 +36,7 @@
 
                                 <img class="img-fluid rounded-start ml-3"
                                      style="max-height:500px; width: auto;"
-                                     src="${image.getImagePath()}" alt="Card image">
+                                     src="${contextPath}/${image.getImagePath()}" alt="Card image">
                             </c:if>
                         </c:forEach>
 

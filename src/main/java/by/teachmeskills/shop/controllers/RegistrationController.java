@@ -1,7 +1,7 @@
 package by.teachmeskills.shop.controllers;
 
 import by.teachmeskills.shop.domain.User;
-import by.teachmeskills.shop.exceptions.EntityNotFoundException;
+import by.teachmeskills.shop.exceptions.EntityOperationException;
 import by.teachmeskills.shop.exceptions.RegistrationException;
 import by.teachmeskills.shop.services.UserService;
 import jakarta.validation.Valid;
@@ -35,7 +35,7 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public ModelAndView registration(@ModelAttribute(USER) @Valid User user, BindingResult bindingResult, ModelAndView modelAndView) throws RegistrationException, EntityNotFoundException {
+    public ModelAndView registration(@Valid @ModelAttribute(USER) User user, BindingResult bindingResult, ModelAndView modelAndView) throws RegistrationException, EntityOperationException {
         if (bindingResult.hasErrors()) {
             populateError("name", modelAndView, bindingResult);
             populateError("surname", modelAndView, bindingResult);
@@ -55,7 +55,7 @@ public class RegistrationController {
 
     private void populateError(String field, ModelAndView modelAndView, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors(field)) {
-            modelAndView.addObject(field + "error", Objects.requireNonNull(bindingResult.getFieldError(field))
+            modelAndView.addObject(field + "Error", Objects.requireNonNull(bindingResult.getFieldError(field))
                     .getDefaultMessage());
         }
     }

@@ -1,8 +1,6 @@
 package by.teachmeskills.shop.controllers;
 
 import by.teachmeskills.shop.domain.User;
-import by.teachmeskills.shop.exceptions.EntityNotFoundException;
-import by.teachmeskills.shop.exceptions.LoginException;
 import by.teachmeskills.shop.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
@@ -35,7 +33,7 @@ public class LoginController {
     }
 
     @PostMapping
-    public ModelAndView login(@ModelAttribute(USER) @Valid User user, BindingResult bindingResult, ModelAndView modelAndView) throws LoginException, EntityNotFoundException {
+    public ModelAndView login(@Valid @ModelAttribute(USER)  User user, BindingResult bindingResult, ModelAndView modelAndView)  {
         if (bindingResult.hasErrors()) {
             populateError("email", modelAndView, bindingResult);
             populateError("password", modelAndView, bindingResult);

@@ -35,13 +35,13 @@
                             <c:forEach items="${images}" var="image">
                                 <c:if test="${image.getPrimaryImage() == 1}">
                                     <div class="carousel-item active">
-                                        <img src="${image.getImagePath()}" class="d-block img-fluid rounded-start ml-3"
+                                        <img src="${contextPath}/${image.getImagePath()}" class="d-block img-fluid rounded-start ml-3"
                                              style="max-height:500px; width: auto;">
                                     </div>
                                 </c:if>
                                 <c:if test="${image.getPrimaryImage() == 0}">
                                     <div class="carousel-item">
-                                        <img src="${image.getImagePath()}" class="d-block img-fluid rounded-start ml-3"
+                                        <img src="${contextPath}/${image.getImagePath()}" class="d-block img-fluid rounded-start ml-3"
                                              style="max-height:500px; width: auto;">
                                     </div>
                                 </c:if>

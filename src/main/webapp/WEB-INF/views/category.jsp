@@ -5,7 +5,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../../css/home.css">
+    <link rel="stylesheet" type="text/css" href="${contextPath}/css/home.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -17,24 +17,24 @@
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
 
-    <title>${categoryName}</title>
+    <title>${category.getName()}</title>
 </head>
 <body>
 
 <jsp:include page="header.jsp" />
 <div class="container-fluid">
-    <h1 class="h1Category">${categoryName}</h1>
+    <h1 class="h1Category">${category.getName()}</h1>
     <c:if test="${not empty products}">
         <c:forEach items="${products}" var="product">
             <div class="card mb-5 offset-1 cardCategory" type="product">
                 <div class="row g-0">
                     <div class="col-md-2">
-                        <a href='<c:url value="${contextPath}/product/${product.getId()}"/>'>
+                        <a href="${contextPath}/product/${product.getId()}"/>
 
                             <c:forEach items="${images}" var="image">
                                 <c:if test="${product.getId() == image.getProductId() && image.getPrimaryImage() == 1}">
                                     <img class="img-fluid rounded-start ml-3 ingCategory"
-                                         src="${contextPath}${image.getImagePath()}" alt="Card image">
+                                         src="${contextPath}/${image.getImagePath()}" alt="Card image">
                                 </c:if>
                             </c:forEach>
                         </a>
