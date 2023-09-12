@@ -3,6 +3,8 @@ package by.teachmeskills.shop.services.impl;
 import by.teachmeskills.shop.domain.Category;
 import by.teachmeskills.shop.domain.Image;
 import by.teachmeskills.shop.domain.Product;
+import by.teachmeskills.shop.enums.PagesPathEnum;
+import by.teachmeskills.shop.enums.RequestParamsEnum;
 import by.teachmeskills.shop.repositories.CategoryRepository;
 import by.teachmeskills.shop.services.CategoryService;
 import by.teachmeskills.shop.services.ImageService;
@@ -21,6 +23,7 @@ import static by.teachmeskills.shop.enums.PagesPathEnum.HOME_PAGE;
 import static by.teachmeskills.shop.enums.RequestParamsEnum.CATEGORIES;
 import static by.teachmeskills.shop.enums.RequestParamsEnum.IMAGES;
 import static by.teachmeskills.shop.enums.RequestParamsEnum.PRODUCTS;
+import static by.teachmeskills.shop.enums.ShopConstants.PAGE_SIZE;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -87,6 +90,29 @@ public class CategoryServiceImpl implements CategoryService {
         model.addAttribute(CATEGORIES.getValue(), categories);
         model.addAttribute(IMAGES.getValue(), images);
 
+        return new ModelAndView(HOME_PAGE.getPath(), model);
+    }
+    @Override
+    public ModelAndView getPaginatedCategories(int currentPage) {
+        ModelMap model = new ModelMap();
+        List<Category> categories = categoryRepository.findPaginatedCategories(currentPage - 1, PAGE_SIZE);
+
+        List<Image> images = new ArrayList<>();
+
+        for (Category category : categories) {
+            images.add(imageService.getImageByCategoryId(category.getId()));
+        }
+
+        Long totalItems = categoryRepository.getTotalItems();
+        int totalPages = (int) (Math.ceil(totalItems / PAGE_SIZE));
+
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("totalPages", totalPages);
+
+        model.addAttribute(CATEGORIES.getValue(), categories);
+        model.addAttribute(IMAGES.getValue(), images);
+
+        model.addAttribute(CATEGORIES.getValue(), categories);
         return new ModelAndView(HOME_PAGE.getPath(), model);
     }
 }

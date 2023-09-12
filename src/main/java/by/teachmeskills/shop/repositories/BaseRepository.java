@@ -1,8 +1,6 @@
 package by.teachmeskills.shop.repositories;
 
 import by.teachmeskills.shop.domain.BaseEntity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 

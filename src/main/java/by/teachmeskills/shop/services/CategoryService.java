@@ -7,4 +7,5 @@ public interface CategoryService extends BaseService<Category> {
     ModelAndView getCategoryById(int id);
 
     ModelAndView getCategories();
+    ModelAndView getPaginatedCategories(int currentPage);
 }

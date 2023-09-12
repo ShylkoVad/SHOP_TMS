@@ -9,6 +9,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,6 +28,7 @@ import java.util.List;
 @Entity
 @Table(name = "products")
 public class Product extends BaseEntity {
+
     @NotBlank(message = "Поле не может быть пустым!")
     @Column(name = "name")
     private String name;
@@ -36,11 +38,12 @@ public class Product extends BaseEntity {
     private String description;
 
     @NotBlank(message = "Поле не может быть пустым!")
+    @Min(value = 0)
     @Column(name = "price")
     private double price;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "categoryId", nullable = false)
     private Category category;
 
     @ToString.Exclude

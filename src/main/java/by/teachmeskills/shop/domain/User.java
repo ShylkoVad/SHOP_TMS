@@ -43,8 +43,10 @@ public class User extends BaseEntity {
 
     @NotBlank(message = "Поле должно быть заполнено!")
     @Past(message = "Введен неверный формат Даты рождения!")
-    @Column(name = "birthDate")
+    @Column(name = "birthday")
     private LocalDate birthday;
+
+    @Column(name = "balance")
     private double balance;
 
     @Email(message = "Введен неверный формат email!")

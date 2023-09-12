@@ -5,6 +5,7 @@ import by.teachmeskills.shop.domain.Image;
 import by.teachmeskills.shop.domain.Order;
 import by.teachmeskills.shop.domain.User;
 import by.teachmeskills.shop.exceptions.RegistrationException;
+import by.teachmeskills.shop.repositories.CategoryRepository;
 import by.teachmeskills.shop.repositories.UserRepository;
 import by.teachmeskills.shop.services.CategoryService;
 import by.teachmeskills.shop.services.ImageService;
@@ -29,6 +30,7 @@ import static by.teachmeskills.shop.enums.RequestParamsEnum.NAME;
 import static by.teachmeskills.shop.enums.RequestParamsEnum.ORDERS;
 import static by.teachmeskills.shop.enums.RequestParamsEnum.SURNAME;
 import static by.teachmeskills.shop.enums.RequestParamsEnum.USER;
+import static by.teachmeskills.shop.enums.ShopConstants.PAGE_SIZE;
 
 @Slf4j
 @Service
@@ -37,12 +39,16 @@ public class UserServiceImpl implements UserService {
     private final CategoryService categoryService;
     private final ImageService imageService;
     private final OrderService orderService;
+    private final CategoryRepository categoryRepository;
 
-    public UserServiceImpl(UserRepository userRepository, CategoryService categoryService, ImageService imageService, OrderService orderService) {
+
+    public UserServiceImpl(UserRepository userRepository, CategoryService categoryService,
+                           ImageService imageService, OrderService orderService, CategoryRepository categoryRepository) {
         this.userRepository = userRepository;
         this.categoryService = categoryService;
         this.imageService = imageService;
         this.orderService = orderService;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
@@ -88,13 +94,16 @@ public class UserServiceImpl implements UserService {
             User loggedUser = userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
 
             if (loggedUser != null) {
-                List<Category> categories = categoryService.read();
+                List<Category> categories = categoryRepository.findPaginatedCategories(0, PAGE_SIZE);
                 List<Image> images = new ArrayList<>();
 
                 for (Category category : categories) {
                     images.add(imageService.getImageByCategoryId(category.getId()));
                 }
-
+                Long totalItems = categoryRepository.getTotalItems();
+                int totalPages = (int) (Math.ceil(totalItems / PAGE_SIZE));
+                model.addAttribute("currentPage", 1);
+                model.addAttribute("totalPages", totalPages);
                 model.addAttribute(CATEGORIES.getValue(), categories);
                 model.addAttribute(IMAGES.getValue(), images);
                 model.addAttribute(USER.getValue(), loggedUser);
@@ -113,12 +122,17 @@ public class UserServiceImpl implements UserService {
         User createdUser = create(user);
         if (createdUser != null) {
             ModelMap model = new ModelMap();
-            List<Category> categories = categoryService.read();
+            List<Category> categories = categoryRepository.findPaginatedCategories(0, PAGE_SIZE);
             List<Image> images = new ArrayList<>();
 
             for (Category category : categories) {
                 images.add(imageService.getImageByCategoryId(category.getId()));
             }
+            Long totalItems = categoryRepository.getTotalItems();
+            int totalPages = (int) (Math.ceil(totalItems / PAGE_SIZE));
+
+            model.addAttribute("currentPage", 1);
+            model.addAttribute("totalPages", totalPages);
             model.addAttribute(CATEGORIES.getValue(), categories);
             model.addAttribute(IMAGES.getValue(), images);
             return new ModelAndView(HOME_PAGE.getPath(), model);

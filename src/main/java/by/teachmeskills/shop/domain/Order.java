@@ -1,11 +1,20 @@
 package by.teachmeskills.shop.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
@@ -19,8 +28,22 @@ import java.util.List;
 @Entity
 @Table(name = "orders")
 public class Order extends BaseEntity {
-    private int userId;
+
+    @PastOrPresent
+    @Column(name = "createdAt")
     private LocalDateTime createdAt;
-    private List<Product> productList;
+
+    @Min(value = 0)
+    @Column(name = "price")
     private double price;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ManyToMany
+    @JoinTable(name = "order_lists", joinColumns = @JoinColumn(name = "orderId"),
+            inverseJoinColumns = @JoinColumn(name = "productId"))
+    private List<Product> products;
+
+    @ManyToOne(optional = false)
+    private User user;
 }
