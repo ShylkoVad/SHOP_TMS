@@ -1,0 +1,29 @@
+.data_user {
+    height: 30px;
+    background-color: whitesmoke;
+ }
+
+/* Стиль кнопок вкладок */
+.tablink {
+    background-color: whitesmoke;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 17px;
+    width: 25%;
+}
+
+/* Изменение цвета фона кнопок при наведении курсора */
+.tablink:hover {
+    background-color: gray;
+}
+
+/* Установка стилей по умолчанию для содержимого вкладки */
+.tabcontent {
+    display: none;
+    padding: 50px;
+    text-align: left;
+}
+
