@@ -30,7 +30,7 @@ import java.util.List;
 public class Order extends BaseEntity {
 
     @PastOrPresent
-    @Column(name = "createdAt")
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @Min(value = 0)
@@ -40,8 +40,8 @@ public class Order extends BaseEntity {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToMany
-    @JoinTable(name = "order_lists", joinColumns = @JoinColumn(name = "orderId"),
-            inverseJoinColumns = @JoinColumn(name = "productId"))
+    @JoinTable(name = "order_lists", joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products;
 
     @ManyToOne(optional = false)

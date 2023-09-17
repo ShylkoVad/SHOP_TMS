@@ -54,16 +54,16 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Override
     public List<Order> findByDate(LocalDateTime date) {
         Session session = entityManager.unwrap(Session.class);
-        Query<Order> query = session.createQuery("select o from Order o where o.createdAt=:createdAt", Order.class);
-        query.setParameter("createdAt", Timestamp.valueOf(date));
+        Query<Order> query = session.createQuery("select o from Order o where o.created_at=:created_at", Order.class);
+        query.setParameter("created_at", Timestamp.valueOf(date));
         return query.list();
     }
 
     @Override
     public List<Order> findByUserId(int id) {
         Session session = entityManager.unwrap(Session.class);
-        Query<Order> query = session.createQuery("select o from Order o where o.user.id=:userId", Order.class);
-        query.setParameter("userId", id);
+        Query<Order> query = session.createQuery("select o from Order o where o.user.id=:user_id", Order.class);
+        query.setParameter("user_id", id);
         return query.list();
     }
 }

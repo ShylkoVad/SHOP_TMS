@@ -4,8 +4,8 @@ import by.teachmeskills.shop.domain.User;
 import by.teachmeskills.shop.exceptions.EntityOperationException;
 import by.teachmeskills.shop.exceptions.RegistrationException;
 import by.teachmeskills.shop.services.UserService;
-import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,7 +35,7 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public ModelAndView registration(@Valid @ModelAttribute(USER) User user, BindingResult bindingResult, ModelAndView modelAndView) throws RegistrationException, EntityOperationException {
+    public ModelAndView registration(@ModelAttribute(USER) @Validated User user, BindingResult bindingResult, ModelAndView modelAndView) throws RegistrationException, EntityOperationException {
         if (bindingResult.hasErrors()) {
             populateError("name", modelAndView, bindingResult);
             populateError("surname", modelAndView, bindingResult);

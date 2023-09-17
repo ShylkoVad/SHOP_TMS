@@ -27,6 +27,6 @@ public class ShopApplication {
                         \tApplication '{}' is running! Access URLs:
                         \tLocal: \t\t{}://localhost:{}{}
                         ----------------------------------------------------------""",
-                env.getProperty("spring.application.name"), "http", env.getProperty("server.port"), "/login");
+                env.getProperty("spring.application.name"), "http", env.getProperty("server.port"), "/home/1");
     }
 }

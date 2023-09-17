@@ -1,7 +1,5 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/" lang="ru">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -23,10 +21,11 @@
 </head>
 <body>
 
-<jsp:include page="header.jsp" />
+<div th:insert="~{header.html}"></div>
 <div class="container">
 
-    <button class="tablink m-2" onclick="openTab('personalArea', this, 'white')" id="defaultOpen">Личный кабинет</button>
+    <button class="tablink m-2" onclick="openTab('personalArea', this, 'white')" id="defaultOpen">Личный кабинет
+    </button>
     <button class="tablink m-2" onclick="openTab('historyOrders', this, 'white')">История заказов</button>
     <button class="tablink m-2" onclick="openTab('updateUserDataImpl', this, 'white')">Обновление данных</button>
 
@@ -34,33 +33,34 @@
         <div class="border border-dark-subtle m-5 rounded-4">
             <div class="row">
                 <div class="col-1 h5 m-2">Имя</div>
-                <div class=" col-4 data_user h5 border border-dark-subtle m-2 rounded-2">
-                    ${user.getName()}
+                <div class=" col-4 data_user h5 border border-dark-subtle m-2 rounded-2"
+                     th:text="${name}">
+
                 </div>
                 <div class=" col-1 h5 m-2">Фамилия</div>
-                <div class=" col-4 data_user h5 border border-dark-subtle m-2 rounded-2">
-                    ${user.getSurname()}
+                <div class=" col-4 data_user h5 border border-dark-subtle m-2 rounded-2"
+                     th:text="${surname}">
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-1 h5 m-2">Email</div>
-                <div class=" col-4 data_user h5 border border-dark-subtle m-2 rounded-2">
-                    ${user.getEmail()}
+                <div class=" col-4 data_user h5 border border-dark-subtle m-2 rounded-2"
+                     th:text="${email}">
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-2 h5 m-2">Дата рождения</div>
-                <div class=" col-4 data_user h5 border border-dark-subtle m-2 rounded-2">
-                    ${user.getBirthday()}
+                <div class=" col-4 data_user h5 border border-dark-subtle m-2 rounded-2"
+                     th:text="${birthday}">
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-1 h5 m-2">Баланс</div>
-                <div class=" col-4 data_user h5 border border-dark-subtle m-2 rounded-2">
-                    ${user.getBalance()} р.
+                <div class=" col-4 data_user h5 border border-dark-subtle m-2 rounded-2"
+                    th:text="${balance + ' р.'}">
                 </div>
             </div>
 
@@ -71,15 +71,13 @@
         <div class="border border-dark-subtle m-5 rounded-4">
             <h2 class="m-2">История заказов:</h2>
             <div>
-                <c:if test="${not empty orders}">
-                    <c:forEach items="${orders}" var="order">
-                        <div class=" row border border-dark-subtle m-1 rounded-4">
-                            <div class="col-8 h5 m-2"> Заказ №${order.getId()} от ${order.getCreatedAt()}</div>
-                            <div class="col-3 h5 m-2">${order.getPrice()} р.</div>
-                            <div>${product.getName()}</div>
-                        </div>
-                    </c:forEach>
-                </c:if>
+                <div class=" row border border-dark-subtle m-1 rounded-4"
+                     th:each="order : ${orders}">
+                    <div class="col-8 h5 m-2"
+                         th:text="${'Заказ №' + order.id + ' - ' + order.createdAt}">Id / дата заказа
+                    </div>
+                    <div class="col-3 h5 m-2" th:text="${order.price + ' р.'}">Стоимость заказа</div>
+                </div>
             </div>
         </div>
     </div>
@@ -92,7 +90,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 

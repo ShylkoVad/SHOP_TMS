@@ -1,8 +1,5 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org/" lang="ru">
 <head>
     <title>Categories Statistic</title>
     <meta charset="utf-8">
@@ -13,7 +10,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-<h2>Чтение всех продуктов из БД заняло ${timeInMillis}</h2>
-
+<h2 th:text="${'Чтение всех продуктов из БД заняло: ' + timeInMillis + '.'}">Время чтения продуктов из БД.</h2>
 </body>
 </html>

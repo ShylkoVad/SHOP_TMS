@@ -53,16 +53,16 @@ public class ImageRepositoryImpl implements ImageRepository {
     @Override
     public Image findByCategoryId(int categoryId) {
         Session session = entityManager.unwrap(Session.class);
-        Query<Image> query = session.createQuery("select i from Image i where i.category.id=:categoryId", Image.class);
-        query.setParameter("categoryId", categoryId);
+        Query<Image> query = session.createQuery("select i from Image i where i.category.id=:category_id", Image.class);
+        query.setParameter("category_id", categoryId);
         return query.uniqueResult();
     }
 
     @Override
     public List<Image> findByProductId(int productId) {
         Session session = entityManager.unwrap(Session.class);
-        Query<Image> query = session.createQuery("select i from Image i where i.product.id=:productId", Image.class);
-        query.setParameter("productId", productId);
+        Query<Image> query = session.createQuery("select i from Image i where i.product.id=:product_id", Image.class);
+        query.setParameter("product_id", productId);
         return query.list();
     }
 }

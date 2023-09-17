@@ -24,18 +24,18 @@ import lombok.experimental.SuperBuilder;
 public class Image extends BaseEntity {
 
     @NotBlank(message = "Поле не может быть пустым!")
-    @Column(name = "imagePath")
+    @Column(name = "image_path")
     private String imagePath;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "productId", nullable = false)
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     @OneToOne(optional = false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "categoryId", nullable = false)
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     @NotBlank(message = "Поле не может быть пустым!")
-    @Column(name = "primaryImage")
+    @Column(name = "primary_image")
     private int primaryImage;
 }

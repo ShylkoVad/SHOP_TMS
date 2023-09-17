@@ -3,8 +3,6 @@ package by.teachmeskills.shop.services.impl;
 import by.teachmeskills.shop.domain.Category;
 import by.teachmeskills.shop.domain.Image;
 import by.teachmeskills.shop.domain.Product;
-import by.teachmeskills.shop.enums.PagesPathEnum;
-import by.teachmeskills.shop.enums.RequestParamsEnum;
 import by.teachmeskills.shop.repositories.CategoryRepository;
 import by.teachmeskills.shop.services.CategoryService;
 import by.teachmeskills.shop.services.ImageService;

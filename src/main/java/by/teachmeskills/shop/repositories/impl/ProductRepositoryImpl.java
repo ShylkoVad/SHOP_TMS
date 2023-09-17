@@ -53,8 +53,8 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public List<Product> findByCategoryId(int categoryId) {
         Session session = entityManager.unwrap(Session.class);
-        Query<Product> query = session.createQuery("select p from Product p where p.category.id=:categoryId", Product.class);
-        query.setParameter("categoryId", categoryId);
+        Query<Product> query = session.createQuery("select p from Product p where p.category.id=:category_id", Product.class);
+        query.setParameter("category_id", categoryId);
         return query.list();
     }
 

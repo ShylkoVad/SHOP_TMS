@@ -87,11 +87,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ModelAndView authenticate(User user) {
+    public ModelAndView authenticate(String email, String password) {
         ModelMap model = new ModelMap();
-
-        if (user != null && user.getEmail() != null && user.getPassword() != null) {
-            User loggedUser = userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
+        if (email != null && password != null) {
+            User loggedUser = userRepository.findByEmailAndPassword(email, password);
 
             if (loggedUser != null) {
                 List<Category> categories = categoryRepository.findPaginatedCategories(0, PAGE_SIZE);
@@ -122,17 +121,12 @@ public class UserServiceImpl implements UserService {
         User createdUser = create(user);
         if (createdUser != null) {
             ModelMap model = new ModelMap();
-            List<Category> categories = categoryRepository.findPaginatedCategories(0, PAGE_SIZE);
+            List<Category> categories = categoryService.read();
             List<Image> images = new ArrayList<>();
 
             for (Category category : categories) {
                 images.add(imageService.getImageByCategoryId(category.getId()));
             }
-            Long totalItems = categoryRepository.getTotalItems();
-            int totalPages = (int) (Math.ceil(totalItems / PAGE_SIZE));
-
-            model.addAttribute("currentPage", 1);
-            model.addAttribute("totalPages", totalPages);
             model.addAttribute(CATEGORIES.getValue(), categories);
             model.addAttribute(IMAGES.getValue(), images);
             return new ModelAndView(HOME_PAGE.getPath(), model);

@@ -43,7 +43,7 @@ public class Product extends BaseEntity {
     private double price;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "categoryId", nullable = false)
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     @ToString.Exclude

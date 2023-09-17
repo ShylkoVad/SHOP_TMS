@@ -2,8 +2,8 @@ package by.teachmeskills.shop.controllers;
 
 import by.teachmeskills.shop.domain.User;
 import by.teachmeskills.shop.services.UserService;
-import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,14 +33,14 @@ public class LoginController {
     }
 
     @PostMapping
-    public ModelAndView login(@Valid @ModelAttribute(USER)  User user, BindingResult bindingResult, ModelAndView modelAndView)  {
-        if (bindingResult.hasErrors()) {
+    public ModelAndView login(@ModelAttribute(USER) @Validated User user, BindingResult bindingResult, ModelAndView modelAndView)  {
+        if (bindingResult.hasFieldErrors("email") || bindingResult.hasFieldErrors("password")) {
             populateError("email", modelAndView, bindingResult);
             populateError("password", modelAndView, bindingResult);
             modelAndView.setViewName(LOGIN_PAGE.getPath());
             return modelAndView;
         }
-        return userService.authenticate(user);
+        return userService.authenticate(user.getEmail(), user.getPassword());
     }
 
     @ModelAttribute(USER)

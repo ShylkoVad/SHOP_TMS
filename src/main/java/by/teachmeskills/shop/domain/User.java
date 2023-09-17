@@ -7,6 +7,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -29,19 +30,21 @@ import java.util.List;
 @Entity
 public class User extends BaseEntity {
 
+    @NotNull
     @NotBlank(message = "Поле должно быть заполнено!")
     @Pattern(regexp = "^[А-Я][Ёа-яё]+$", message = "Введен неверный формат Имени!")
     @Size(min = 2, message = "Имя не может быть менее 2 символов!")
     @Column(name = "name")
     private String name;
 
+    @NotNull
     @NotBlank(message = "Поле должно быть заполнено!")
     @Pattern(regexp = "^[А-Я][Ёа-яё]+$", message = "Введен неверный формат Фамилии!")
     @Size(min = 2, message = "Фамилия не может быть менее 2 символов!")
     @Column(name = "surname")
     private String surname;
 
-    @NotBlank(message = "Поле должно быть заполнено!")
+    @NotNull (message = "Поле должно быть заполнено!")
     @Past(message = "Введен неверный формат Даты рождения!")
     @Column(name = "birthday")
     private LocalDate birthday;
@@ -49,15 +52,16 @@ public class User extends BaseEntity {
     @Column(name = "balance")
     private double balance;
 
+    @NotNull
     @Email(message = "Введен неверный формат email!")
     @NotBlank(message = "Поле должно быть заполнено!")
     @Column(name = "email")
     private String email;
 
+    @NotNull
     @NotBlank(message = "Поле должно быть заполнено!")
     @Pattern(regexp = "\\S+", message = "Пароль не должен содержать пробелы!")
     @Column(name = "password")
-//@Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$", message = "Введен неверный пароль!")
     private String password;
 
     @Column(name = "street")
