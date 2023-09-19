@@ -1,8 +1,5 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<html>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/" lang="ru">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -20,7 +17,6 @@
             crossorigin="anonymous"></script>
     <script src="/script/date.js"></script>
     <script src="/script/dropdown.js"></script>
-
 
 </head>
 <body>
@@ -43,8 +39,6 @@
                             class="dropbtn nav-link mx-4 text-uppercase dropdown-toggle" data-bs-toggle="dropdown">
                         <img src="../../images/icons/user.png" class="me-2">Аккаунт
                     </button>
-                    <%-- данные теги if надо доработать--%>
-                    <c:if test="${not empty user}">
                         <div id="myDropdown" class="dropdown-content">
                             <a href="/account">Аккаунт</a>
                             <a href="/login">Вход</a>
@@ -52,13 +46,6 @@
                             <hr style=" border-top: 1px solid black;  border-bottom: 1px solid black;  height: 1px;"/>
                             <a href="#">Выход</a>
                         </div>
-                    </c:if>
-                    <c:if test="${empty user}">
-                        <div id="myDropdown" class="dropdown-content">
-                            <a href="/login">Вход</a>
-                            <a href="/registration">Регистрация</a>
-                        </div>
-                    </c:if>
                 </li>
             </ul>
         </div>
@@ -75,10 +62,10 @@
             <div class=" collapse navbar-collapse " id="navbarNavDropdown">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
-                        <a class="nav-link mx-5 text-uppercase active" href="/home">Главная</a>
+                        <a class="nav-link mx-5 text-uppercase active" href="/home/1">Главная</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link mx-5 text-uppercase" href="/home">Каталог</a>
+                        <a class="nav-link mx-5 text-uppercase" href="/home/1">Каталог</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link mx-5 text-uppercase" href="/contact">О магазине</a>
@@ -95,7 +82,6 @@
             </div>
         </div>
     </nav>
-
 </div>
 
 </body>

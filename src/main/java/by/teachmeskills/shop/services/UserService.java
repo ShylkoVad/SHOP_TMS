@@ -11,7 +11,8 @@ public interface UserService extends BaseService<User> {
     User getUserByEmailAndPassword(String email, String password) throws EntityOperationException;
 
     User getUserByEmail(String email) throws EntityOperationException;
-    ModelAndView authenticate(User user);
+
+    ModelAndView authenticate(String email, String password);
 
     ModelAndView createUser(User user) throws RegistrationException, EntityOperationException;
 

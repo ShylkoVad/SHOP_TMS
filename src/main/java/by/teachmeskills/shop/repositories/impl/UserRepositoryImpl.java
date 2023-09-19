@@ -2,107 +2,68 @@ package by.teachmeskills.shop.repositories.impl;
 
 import by.teachmeskills.shop.domain.User;
 import by.teachmeskills.shop.repositories.UserRepository;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCallback;
-import org.springframework.jdbc.core.RowMapper;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
-import java.sql.Date;
 import java.util.List;
 
 @Repository
+@Transactional
 public class UserRepositoryImpl implements UserRepository {
-    private final JdbcTemplate jdbcTemplate;
-    private static String updateQuery;
-    private static final String ADD_USER_QUERY = "INSERT INTO users (name, surname, birthday, balance, email, password) VALUES (?, ?, ?, ?, ?, ?)";
-    private static final String GET_ALL_USERS_QUERY = "SELECT * FROM users";
-    private static final String DELETE_USER_QUERY = "DELETE FROM users WHERE id = ?";
-    private static final String GET_USER_BY_ID_QUERY = "SELECT * FROM users WHERE id = ?";
-    private static final String GET_USER_BY_EMAIL_AND_PASS_QUERY = "SELECT * FROM users WHERE email = ? AND password = ?";
-    private static final String GET_USER_BY_EMAIL_QUERY = "SELECT * FROM users WHERE email = ?";
-
-    public UserRepositoryImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public User create(User entity) {
-        return jdbcTemplate.execute(ADD_USER_QUERY, (PreparedStatementCallback<User>) ps -> {
-            ps.setString(1, entity.getName());
-            ps.setString(2, entity.getSurname());
-            ps.setDate(3, Date.valueOf(entity.getBirthday()));
-            ps.setBigDecimal(4, BigDecimal.valueOf(entity.getBalance()));
-            ps.setString(5, entity.getEmail());
-            ps.setString(6, entity.getPassword());
-            ps.execute();
-
-            return entity;
-        });
-    }
-
-    @Override
-    public List<User> read() {
-        return jdbcTemplate.query(GET_ALL_USERS_QUERY, (rs, rowNum) -> User.builder()
-                .id(rs.getInt("id"))
-                .name(rs.getString("name"))
-                .surname(rs.getString("surname"))
-                .birthday(rs.getTimestamp("birthday").toLocalDateTime().toLocalDate())
-                .balance(rs.getBigDecimal("balance").doubleValue())
-                .email(rs.getString("email"))
-                .password(rs.getString("password"))
-                .build());
-    }
-
-    @Override
-    public User update(User entity) {
-        jdbcTemplate.update(updateQuery);
+        Session session = entityManager.unwrap(Session.class);
+        session.persist(entity);
         return entity;
     }
 
     @Override
+    public List<User> read() {
+        Session session = entityManager.unwrap(Session.class);
+        return session.createQuery("select u from User u ", User.class).list();
+    }
+
+    @Override
+    public User update(User entity) {
+        Session session = entityManager.unwrap(Session.class);
+        return session.merge(entity);
+    }
+
+    @Override
     public void delete(int id) {
-        jdbcTemplate.update(DELETE_USER_QUERY, id);
+        Session session = entityManager.unwrap(Session.class);
+        User user = session.get(User.class, id);
+        session.remove(user);
     }
 
     @Override
     public User findById(int id) {
-        return jdbcTemplate.queryForObject(GET_USER_BY_ID_QUERY, (RowMapper<User>) (rs, rowNum) -> User.builder()
-                .id(rs.getInt("id"))
-                .name(rs.getString("name"))
-                .surname(rs.getString("surname"))
-                .birthday(rs.getTimestamp("birthday").toLocalDateTime().toLocalDate())
-                .balance(rs.getBigDecimal("balance").doubleValue())
-                .email(rs.getString("email"))
-                .password(rs.getString("password"))
-                .build(), id);
+        Session session = entityManager.unwrap(Session.class);
+        return session.get(User.class, id);
     }
 
     @Override
     public User findByEmailAndPassword(String email, String password) {
-
-        return jdbcTemplate.queryForObject(GET_USER_BY_EMAIL_AND_PASS_QUERY, (RowMapper<User>) (rs, rowNum) -> User.builder()
-                .id(rs.getInt("id"))
-                .name(rs.getString("name"))
-                .surname(rs.getString("surname"))
-                .birthday(rs.getTimestamp("birthday").toLocalDateTime().toLocalDate())
-                .balance(rs.getInt("balance"))
-                .email(rs.getString("email"))
-                .password(rs.getString("password"))
-                .build(), email, password);
+        Session session = entityManager.unwrap(Session.class);
+        Query<User> query = session.createQuery("select u from User u where u.email=:email and u.password=:password", User.class);
+        query.setParameter("email", email);
+        query.setParameter("password", password);
+        return query.uniqueResult();
     }
 
 
     @Override
     public User findByEmail(String email) {
-        return jdbcTemplate.queryForObject(GET_USER_BY_EMAIL_QUERY, (RowMapper<User>) (rs, rowNum) -> User.builder()
-                .id(rs.getInt("id"))
-                .name(rs.getString("name"))
-                .surname(rs.getString("surname"))
-                .birthday(rs.getTimestamp("birthday").toLocalDateTime().toLocalDate())
-                .balance(rs.getInt("balance"))
-                .email(rs.getString("email"))
-                .password(rs.getString("password"))
-                .build(), email);
+        Session session = entityManager.unwrap(Session.class);
+        Query<User> query = session.createQuery("select u from User u where u.email=:email", User.class);
+        query.setParameter("email", email);
+        return query.uniqueResult();
     }
 }

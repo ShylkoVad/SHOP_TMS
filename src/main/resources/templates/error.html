@@ -1,8 +1,5 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
-<html lang="ru">
+<html xmlns:th="http://www.thymeleaf.org/" lang="ru">
 <head>
     <title>Ошибка</title>
     <meta charset="utf-8">
@@ -13,16 +10,13 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <h2>Ошибка</h2>
 
 <div class="container-fluid mb-4">
-    <h2 class="alert alert-danger" role="alert">
-        ${error}
-    </h2>
-    <a href="${contextPath}/login">
-        <button type="button" class="btn btn-danger">Попробуйте еще раз...</button>
-    </a>
+    <h2 class="alert alert-danger" role="alert"
+        th:text="${error}">Название ошибки</h2>
+    <input type="button" class="btn btn-danger"
+           onclick="history.back();" value="Назад"/>
 </div>
 </body>
 </html>

@@ -90,9 +90,10 @@ public class CartService {
         }
 
         Order order = Order.builder()
-                .userId(user.getId())
                 .createdAt(LocalDateTime.now())
                 .price(shopCart.getTotalPrice())
+                .products(productList)
+                .user(user)
                 .build();
 
         orderService.create(order);

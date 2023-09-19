@@ -3,6 +3,7 @@ package by.teachmeskills.shop.controllers;
 import by.teachmeskills.shop.exceptions.EntityOperationException;
 import by.teachmeskills.shop.services.CategoryService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,5 +20,10 @@ public class HomeController {
     @GetMapping
     public ModelAndView openHomePage() throws EntityOperationException {
         return categoryService.getCategories();
+    }
+
+    @GetMapping("/{page}")
+    public ModelAndView changePage(@PathVariable(value = "page") int currentPage) throws EntityOperationException {
+        return categoryService.getPaginatedCategories(currentPage);
     }
 }

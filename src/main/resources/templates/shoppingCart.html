@@ -1,7 +1,5 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/" lang="ru">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -22,42 +20,35 @@
 </head>
 <body>
 
-<jsp:include page="header.jsp" />
+<div th:insert="~{header.html}"></div>
 <div class="container">
     <h2 class="py-4" style="text-align: center">Ваш заказ</h2>
-    <c:if test="${not empty cartProductsList}">
-        <div class="offset-1 mb-5">
-            <c:forEach items="${cartProductsList}" var="product">
-                <div class="row g-0" type="product">
-                    <div class="col-md-2">
-
-                        <c:forEach items="${images}" var="image">
-                            <c:if test="${product.getId() == image.getProductId() && image.getPrimaryImage() == 1}">
-
-                                <img class="img-fluid rounded-start ml-3"
-                                     style="max-height:500px; width: auto;"
-                                     src="${contextPath}/${image.getImagePath()}" alt="Card image">
-                            </c:if>
-                        </c:forEach>
-
-                    </div>
-                    <div class="col-md-10">
-                        <div class="card-body">
-                            <p style="vertical-align: middle">
-                            <p class="ml-4 priceName"> ${product.getName()}</p>
-                            <span class="ml-4 priceProduct">${product.getPrice()} р.</span>
-                            <a href="/cart/remove?product_id=${product.getId()}">
-                                <button id="removeProductFromCart" type="button" class="btn btn-outline-dark ml-4"
-                                        onclick="productRemovedFromShoppingCart()">Удалить
-                                </button>
-                            </a>
-                            </p>
-                        </div>
-                    </div>
+    <div class="offset-1 mb-5">
+        <div class="row g-0" th:each="product : ${cartProductsList}">
+            <div class="col-md-2">
+                <th:block th:each="image : ${images}">
+                    <img class="img-fluid rounded-start ml-3"
+                         style="max-height:500px; width: auto;"
+                         th:src="${image.imagePath}" alt="Card image"
+                         th:if="${product.id == image.product.id and image.primaryImage == 1}">
+                </th:block>
+            </div>
+            <div class="col-md-10">
+                <div class="card-body">
+                    <p style="vertical-align: middle">
+                    <p class="ml-4 priceName" th:text="${product.name}">Имя продукта</p>
+                    <p class="ml-4" th:text="${product.description}">Описание продукта</p>
+                    <span class="ml-4 priceProduct" th:text="${product.price + ' р.'}">Цена</span>
+                    <a th:href="@{'/cart/remove?product_id=' + ${product.id}}">
+                        <button id="removeProductFromCart" type="button" class="btn btn-outline-dark ml-4"
+                                onclick="productRemovedFromShoppingCart()">Удалить
+                        </button>
+                    </a>
+                    </p>
                 </div>
-            </c:forEach>
+            </div>
         </div>
-    </c:if>
+    </div>
     <a href="/cart/checkout" class="btn-lg d-grid gap-2 d-md-flex justify-content-md-end">
         <button type="button" class="btn btn-outline-dark ml-4"
                 onclick="orderIsProcessed()">Оформить заказ

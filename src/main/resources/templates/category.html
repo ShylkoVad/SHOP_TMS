@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/" lang="ru">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="${contextPath}/css/home.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+            crossorigin="anonymous"></script>
+
+    <title th:text="${categoryName}">Название категории</title>
+</head>
+
+<body>
+
+<div th:insert="~{header.html}"></div>
+<div class="container-fluid">
+    <h1 class="h1Category" th:text="${categoryName}">Название категории</h1>
+    <div class="card mb-5 offset-1 cardCategory" th:each="product : ${products}">
+        <div class="row g-0">
+            <div class="col-md-2">
+                <a th:href="@{'/product/' + ${product.id}}">
+                    <th:block th:each="image : ${images}">
+                        <img class="img-fluid rounded-start ml-3 ingCategory"
+                             th:src="${image.imagePath}"
+                             th:if="${product.id == image.product.id and image.primaryImage == 1}"
+                             alt="Card image">
+                    </th:block>
+                </a>
+            </div>
+
+            <div class="col-md-10">
+                <div class="card-body">
+                    <h5 class="card-title text-center" th:text="${product.name}">Название продукта</h5>
+                    <p class="card-text ml-4" th:text="${product.description}">Описание продукта</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

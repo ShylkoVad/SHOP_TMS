@@ -1,8 +1,5 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<html>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/" lang="ru">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -27,42 +24,42 @@
 </head>
 <body>
 
-<jsp:include page="header.jsp"/>
-<div class="container">
-    <div class="col-md-8 offset-md-4">
-        <h2>Регистрация пользователя</h2>
-        ${info}
-        <form method="post" action="/registration" class="needs-validation">
+<div th:insert="~{header.html}"></div>
+<div class="container-fluid">
+    <div class="offset-2 text-center w-50">
+        <form class="text-center offset-5 needs-validation w-25" method="post" action="/registration">
+            <h2 class="w-150">Регистрация пользователя</h2>
             <input type="hidden" name="command" value="registration_user"/>
-            <div class="form-group">
+            <div class="form-group ">
                 <label for="name">Имя:</label>
-                <input type="text" class="form-control w-25" id="name" placeholder="Введите имя" name="name">
-                <span class="error">${nameError}</span>
+                <input type="text" class="form-control" id="name" placeholder="Введите имя" name="name">
+                <span class="error" th:text="${nameError}">Ошибка</span>
             </div>
             <div class="form-group">
                 <label for="surname">Фамилия:</label>
-                <input type="text" class="form-control w-25" id="surname" placeholder="Введите фамилию" name="surname">
-                <span class="error">${surnameError}</span>
+                <input type="text" class="form-control" id="surname" placeholder="Введите фамилию" name="surname">
+                <span class="error" th:text="${surnameError}">Ошибка</span>
             </div>
 
             <div class="form-group">
                 <label for="birthday">Дата рождения:</label>
-                <input type="date" class="form-control w-25" id="birthday" name="birthday">
-                <span class="error">${birthdayError}</span>
+                <input type="date" class="form-control" id="birthday" name="birthday">
+                <span class="error" th:text="${birthdayError}">Ошибка</span>
             </div>
             <div class="form-group">
                 <label for="email">Почта:</label>
-                <input type="email" class="form-control w-25" id="email" placeholder="Введите email" name="email">
-                <span class="error">${emailError}</span>
+                <input type="email" class="form-control" id="email" placeholder="Введите email" name="email">
+                <span class="error" th:text="${emailError}">Ошибка</span>
             </div>
             <div class="form-group">
                 <label for="password">Пароль:</label>
-                <input type="text" class="form-control w-25" id="password" placeholder="Введите пароль" name="password">
-                <span class="error">${passwordError}</span>
+                <input type="text" class="form-control" id="password" placeholder="Введите пароль" name="password">
+                <span class="error" th:text="${passwordError}">Ошибка</span>
             </div>
-            <button id="loginBtn" type="submit" class="btn btn-outline-dark">Зарегистрироваться</button>
+            <button id="loginBtn" type="submit" class="btn btn-outline-dark mb-3">Зарегистрироваться</button>
+            <a class="btn btn-outline-dark" href="/login">На страницу входа</a>
         </form>
-        <a class="btn btn-outline-dark" href="/login">На страницу входа</a>
+
     </div>
 </div>
 </body>
