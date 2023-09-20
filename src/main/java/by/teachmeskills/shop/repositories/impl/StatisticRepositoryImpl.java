@@ -6,7 +6,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,27 +19,23 @@ public class StatisticRepositoryImpl implements StatisticRepository {
 
     @Override
     public StatisticEntity create(StatisticEntity entity) {
-        Session session = entityManager.unwrap(Session.class);
-        session.persist(entity);
+        entityManager.persist(entity);
         return entity;
     }
 
     @Override
     public List<StatisticEntity> read() {
-        Session session = entityManager.unwrap(Session.class);
-        return session.createQuery("select s from S s ", StatisticEntity.class).list();
+        return entityManager.createQuery("select s from S s ", StatisticEntity.class).getResultList();
     }
 
     @Override
     public StatisticEntity update(StatisticEntity entity) {
-        Session session = entityManager.unwrap(Session.class);
-        return session.merge(entity);
+        return entityManager.merge(entity);
     }
 
     @Override
     public void delete(int id) {
-        Session session = entityManager.unwrap(Session.class);
-        StatisticEntity statistic = session.get(StatisticEntity.class, id);
-        session.remove(statistic);
+        StatisticEntity statistic = entityManager.find(StatisticEntity.class, id);
+        entityManager.remove(statistic);
     }
 }

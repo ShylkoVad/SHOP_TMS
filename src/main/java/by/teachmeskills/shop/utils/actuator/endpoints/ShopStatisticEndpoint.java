@@ -33,7 +33,6 @@ public class ShopStatisticEndpoint {
         this.userService = userService;
         this.statisticRepository = statisticRepository;
     }
-    // как и можно ли вообще использовать сразу несколько @ReadOperation
     @ReadOperation
     public ModelAndView getProductStatistic() {
         ModelAndView modelAndView = new ModelAndView();
