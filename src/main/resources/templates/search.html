@@ -32,11 +32,11 @@
                     <a th:href="@{'/product/' + ${product.id}}">
                         <h5 class="card-title text-black text-center"
                             th:text="${product.name}">Название продукта</h5>
-                        <th:block th:each="image : ${images}">
+                        <th:block th:each="image : ${product.images}">
                             <img class="d-block img-fluid rounded-start m-3"
                                  style="max-height:200px; width: auto;"
                                  th:src="${image.imagePath}" alt="Card image"
-                                 th:if="${product.id == image.product.id and image.primaryImage == 1}">
+                                 th:if="${image.primaryImage == 1}">
                         </th:block>
                     </a>
                     <p class="card-text text-truncate d-inline-block"

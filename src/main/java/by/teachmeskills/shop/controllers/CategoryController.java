@@ -1,11 +1,16 @@
 package by.teachmeskills.shop.controllers;
 
-import by.teachmeskills.shop.exceptions.EntityOperationException;
+import by.teachmeskills.shop.exceptions.EntityNotFoundException;
+import by.teachmeskills.shop.exceptions.ExportToFIleException;
 import by.teachmeskills.shop.services.CategoryService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
@@ -18,7 +23,17 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public ModelAndView openCategoryPage(@PathVariable int id) throws EntityOperationException {
+    public ModelAndView openCategoryPage(@PathVariable int id) throws EntityNotFoundException {
         return categoryService.getCategoryById(id);
+    }
+
+    @PostMapping("/csv/import")
+    public ModelAndView importCategoriesFromCsv(@RequestParam("file") MultipartFile file) throws Exception {
+        return categoryService.importCategoriesFromCsv(file);
+    }
+
+    @GetMapping("/csv/export")
+    public void exportCategoriesToCsv(HttpServletResponse response) throws ExportToFIleException {
+        categoryService.exportCategoriesToCsv(response);
     }
 }

@@ -21,10 +21,8 @@ public enum RequestParamsEnum {
     ORDERS("orders"),
     SEARCH_PARAM("search_param"),
     TIME_IN_MILLIS_PARAM("timeInMillis"),
-    ERROR_PARAM("error");
-
-
-
+    ERROR_PARAM("error"),
+    USER_ID("user_id");
 
     private final String value;
 

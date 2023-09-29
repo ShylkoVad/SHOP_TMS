@@ -5,11 +5,13 @@ import by.teachmeskills.shop.domain.Image;
 import by.teachmeskills.shop.domain.Order;
 import by.teachmeskills.shop.domain.Product;
 import by.teachmeskills.shop.domain.User;
+import by.teachmeskills.shop.exceptions.EntityNotFoundException;
 import by.teachmeskills.shop.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,12 +27,10 @@ import static by.teachmeskills.shop.enums.RequestParamsEnum.SHOPPING_CART_PRODUC
 public class CartService {
     private final ProductRepository productRepository;
     private final OrderService orderService;
-    private final ImageService imageService;
 
-    public CartService(ProductRepository productRepository, OrderService orderService, ImageService imageService) {
+    public CartService(ProductRepository productRepository, OrderService orderService) {
         this.productRepository = productRepository;
         this.orderService = orderService;
-        this.imageService = imageService;
     }
 
     public ModelAndView addProductToCart(String id, Cart shopCart) {
@@ -41,12 +41,12 @@ public class CartService {
         shopCart.addProduct(product);
 
         model.addAttribute(PRODUCT.getValue(), product);
-        model.addAttribute(IMAGES.getValue(), imageService.getImagesByProductId(productId));
+        model.addAttribute(IMAGES.getValue(), product.getImages());
 
         return new ModelAndView(PRODUCT_PAGE.getPath(), model);
     }
 
-    public ModelAndView removeProductFromCart(String productId, Cart shopCart) {
+    public ModelAndView removeProductFromCart(String productId, Cart shopCart) throws EntityNotFoundException {
         ModelMap model = new ModelMap();
 
         shopCart.removeProduct(Integer.parseInt(productId));
@@ -55,7 +55,7 @@ public class CartService {
         List<List<Image>> images = new ArrayList<>();
 
         for (Product product : products) {
-            images.add(imageService.getImagesByProductId(product.getId()));
+            images.add(product.getImages());
         }
 
         model.addAttribute(SHOPPING_CART_PRODUCTS.getValue(), products);
@@ -71,7 +71,7 @@ public class CartService {
         List<List<Image>> images = new ArrayList<>();
 
         for (Product product : products) {
-            images.add(imageService.getImagesByProductId(product.getId()));
+            images.add(product.getImages());
         }
 
         model.addAttribute(SHOPPING_CART_PRODUCTS.getValue(), products);
@@ -90,7 +90,7 @@ public class CartService {
         }
 
         Order order = Order.builder()
-                .createdAt(LocalDateTime.now())
+                .createdAt(Timestamp.valueOf(LocalDateTime.now()))
                 .price(shopCart.getTotalPrice())
                 .products(productList)
                 .user(user)

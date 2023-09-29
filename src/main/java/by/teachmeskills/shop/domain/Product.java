@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -29,15 +30,15 @@ import java.util.List;
 @Table(name = "products")
 public class Product extends BaseEntity {
 
-    @NotBlank(message = "Поле не может быть пустым!")
+//    @NotBlank(message = "Поле не может быть пустым!")
     @Column(name = "name")
     private String name;
 
-    @NotBlank(message = "Поле не может быть пустым!")
+//    @NotBlank(message = "Поле не может быть пустым!")
     @Column(name = "description")
     private String description;
 
-    @NotBlank(message = "Поле не может быть пустым!")
+//    @NotBlank(message = "Поле не может быть пустым!")
     @Min(value = 0)
     @Column(name = "price")
     private double price;
@@ -48,7 +49,9 @@ public class Product extends BaseEntity {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "product", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "products_images", joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "images_id"))
     private List<Image> images;
 
     @ToString.Exclude

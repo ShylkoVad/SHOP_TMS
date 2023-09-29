@@ -2,7 +2,6 @@ package by.teachmeskills.shop.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
@@ -17,7 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Data
@@ -31,7 +30,7 @@ public class Order extends BaseEntity {
 
     @PastOrPresent
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
 
     @Min(value = 0)
     @Column(name = "price")
@@ -40,7 +39,7 @@ public class Order extends BaseEntity {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToMany
-    @JoinTable(name = "order_lists", joinColumns = @JoinColumn(name = "order_id"),
+    @JoinTable(name = "orders_products", joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products;
 

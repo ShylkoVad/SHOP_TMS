@@ -13,16 +13,23 @@ import static by.teachmeskills.shop.enums.RequestParamsEnum.ERROR_PARAM;
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    @ExceptionHandler({RegistrationException.class})
+    @ExceptionHandler(RegistrationException.class)
     public ModelAndView handleRegistrationException(Exception ex) {
         ModelMap modelMap = new ModelMap();
         modelMap.addAttribute(ERROR_PARAM.getValue(), ex.getMessage());
         return new ModelAndView(ERROR_PAGE.getPath(), modelMap);
     }
 
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    @ExceptionHandler({EntityOperationException.class})
-    public ModelAndView handleEntityOperationException(Exception ex) {
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(ExportToFIleException.class)
+    public ModelAndView handlerWritingToFileException(Exception ex) {
+        ModelMap modelMap = new ModelMap();
+        modelMap.addAttribute(ERROR_PARAM.getValue(), ex.getMessage());
+        return new ModelAndView(ERROR_PAGE.getPath(), modelMap);
+    }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ParsingException.class)
+    public ModelAndView handlerParsingException(Exception ex) {
         ModelMap modelMap = new ModelMap();
         modelMap.addAttribute(ERROR_PARAM.getValue(), ex.getMessage());
         return new ModelAndView(ERROR_PAGE.getPath(), modelMap);

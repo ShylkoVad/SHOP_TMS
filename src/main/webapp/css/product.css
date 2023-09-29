@@ -1,11 +1,13 @@
 .priceProduct {
     font-size: 2em;
     font-weight: 700;
+    color: black;
 }
 
 .priceName {
     font-size: 30px;
     font-weight: 500;
+    color: black;
 }
 
 .input {
@@ -14,4 +16,9 @@
     border-radius: 0.5rem;
     padding: 4px 6px;
     width: 5%;
+}
+.orderAccountName {
+    font-size: 15px;
+    font-weight: 500;
+    color: black;
 }

@@ -1,6 +1,6 @@
 package by.teachmeskills.shop.controllers;
 
-import by.teachmeskills.shop.exceptions.EntityOperationException;
+import by.teachmeskills.shop.exceptions.EntityNotFoundException;
 import by.teachmeskills.shop.services.CategoryService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,12 +18,12 @@ public class HomeController {
     }
 
     @GetMapping
-    public ModelAndView openHomePage() throws EntityOperationException {
+    public ModelAndView openHomePage() throws EntityNotFoundException {
         return categoryService.getCategories();
     }
 
     @GetMapping("/{page}")
-    public ModelAndView changePage(@PathVariable(value = "page") int currentPage) throws EntityOperationException {
+    public ModelAndView changePage(@PathVariable(value = "page") int currentPage) throws EntityNotFoundException {
         return categoryService.getPaginatedCategories(currentPage);
     }
 }
