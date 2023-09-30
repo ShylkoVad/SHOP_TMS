@@ -78,7 +78,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findByUserId(id);
     }
     @Override
-    public ModelAndView saveOrdersFromFile(MultipartFile file, User user) {
+    public ModelAndView exportSmthFromCsv(MultipartFile file, User user) {
         ModelMap model = new ModelMap();
 
         model.addAttribute(RequestParamsEnum.USER_ID.getValue(), user.getId());
@@ -104,7 +104,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void saveUserOrdersFromBD(HttpServletResponse response, int userId) throws ExportToFIleException {
+    public void importSmthToCsv(HttpServletResponse response, int userId) throws ExportToFIleException {
         response.setContentType("text/csv");
 
         String headerKey = "Content-Disposition";

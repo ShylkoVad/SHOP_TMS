@@ -16,7 +16,7 @@ public interface OrderService extends BaseService<Order> {
     List<Order> getOrderByDate(LocalDateTime date);
 
     List<Order> getOrdersByUserId(int id);
-    ModelAndView saveOrdersFromFile(MultipartFile file, User user);
+    ModelAndView exportSmthFromCsv(MultipartFile file, User user);
 
-    void saveUserOrdersFromBD(HttpServletResponse response, int userId) throws ExportToFIleException;
+    void importSmthToCsv(HttpServletResponse response, int userId) throws ExportToFIleException;
 }

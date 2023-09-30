@@ -36,11 +36,11 @@ public class UserAccountController {
 
     @PostMapping("/csv/import")
     public ModelAndView importOrdersFromCsv(@RequestParam("file") MultipartFile file, User user) {
-        return orderService.saveOrdersFromFile(file, user);
+        return orderService.exportSmthFromCsv(file, user);
     }
 
     @GetMapping("/csv/export/{userId}")
     public void exportOrdersToCsv(HttpServletResponse response, @PathVariable int userId) throws ExportToFIleException {
-        orderService.saveUserOrdersFromBD(response, userId);
+        orderService.importSmthToCsv(response, userId);
     }
 }
