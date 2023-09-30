@@ -1,33 +1,53 @@
 package by.teachmeskills.shop.services.impl;
 
+import by.teachmeskills.shop.csv.converters.ProductCsvConverter;
+import by.teachmeskills.shop.csv.dto.ProductCsv;
 import by.teachmeskills.shop.domain.Image;
 import by.teachmeskills.shop.domain.Product;
+import by.teachmeskills.shop.exceptions.EntityNotFoundException;
+import by.teachmeskills.shop.exceptions.ExportToFIleException;
+import by.teachmeskills.shop.exceptions.ParsingException;
 import by.teachmeskills.shop.repositories.ProductRepository;
-import by.teachmeskills.shop.services.ImageService;
 import by.teachmeskills.shop.services.ProductService;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.supercsv.io.CsvBeanWriter;
+import org.supercsv.io.ICsvBeanWriter;
+import org.supercsv.prefs.CsvPreference;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static by.teachmeskills.shop.enums.InfoEnum.PRODUCTS_SUCCESSFUL_ADDED_INFO;
+import static by.teachmeskills.shop.enums.PagesPathEnum.CATEGORY_PAGE;
 import static by.teachmeskills.shop.enums.PagesPathEnum.PRODUCT_PAGE;
 import static by.teachmeskills.shop.enums.PagesPathEnum.SEARCH_PAGE;
 import static by.teachmeskills.shop.enums.RequestParamsEnum.IMAGES;
+import static by.teachmeskills.shop.enums.RequestParamsEnum.INFO;
 import static by.teachmeskills.shop.enums.RequestParamsEnum.PRODUCT;
 import static by.teachmeskills.shop.enums.RequestParamsEnum.PRODUCTS;
 
 @Service
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
-    private final ImageService imageService;
+    private final ProductCsvConverter productConverter;
 
-    public ProductServiceImpl(ProductRepository productRepository, ImageService imageService) {
+    public ProductServiceImpl(ProductRepository productRepository, ProductCsvConverter productConverter) {
         this.productRepository = productRepository;
-        this.imageService = imageService;
+        this.productConverter = productConverter;
     }
 
     @Override
@@ -46,7 +66,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id) throws EntityNotFoundException {
         productRepository.delete(id);
     }
 
@@ -69,8 +89,7 @@ public class ProductServiceImpl implements ProductService {
             List<List<Image>> images = new ArrayList<>();
 
             for (Product product : products) {
-                images.add(imageService.getImagesByProductId(product.getId()));
-            }
+                images.add(product.getImages());            }
 
             model.addAttribute(PRODUCTS.getValue(), products);
             model.addAttribute(IMAGES.getValue(), images.stream().flatMap(Collection::stream).collect(Collectors.toList()));
@@ -87,8 +106,70 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(id);
         if (product != null) {
             model.addAttribute(PRODUCT.getValue(), product);
-            model.addAttribute(IMAGES.getValue(), imageService.getImagesByProductId(id));
+            model.addAttribute(IMAGES.getValue(), product.getImages());
         }
         return new ModelAndView(PRODUCT_PAGE.getPath(), model);
+    }
+    @Override
+    public ModelAndView saveProductsFromFile(MultipartFile file) {
+        ModelMap model = new ModelMap();
+
+        List<ProductCsv> csvProducts = parseCsv(file);
+        List<Product> newProducts = Optional.ofNullable(csvProducts)
+                .map(list -> list.stream()
+                        .map(productConverter::fromCsv)
+                        .toList())
+                .orElse(null);
+        if (Optional.ofNullable(newProducts).isPresent()) {
+            newProducts.forEach(productRepository::create);
+            model.addAttribute(INFO.getValue(), PRODUCTS_SUCCESSFUL_ADDED_INFO.getInfo());
+            int categoryId = newProducts.get(0).getCategory().getId();
+
+            List<Product> products = productRepository.findByCategoryId(categoryId);
+            model.addAttribute(PRODUCTS.getValue(), products);
+        }
+
+        return new ModelAndView(CATEGORY_PAGE.getPath(), model);
+    }
+
+    @Override
+    public void saveProductsFromBD(HttpServletResponse response, int categoryId) throws ExportToFIleException {
+        response.setContentType("text/csv");
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=productsOfCategoryWithId" + categoryId + ".csv";
+        response.setHeader(headerKey, headerValue);
+        response.setCharacterEncoding("UTF-8");
+
+        List<ProductCsv> csvProducts = productRepository.findByCategoryId(categoryId).stream().map(productConverter::toCsv).toList();
+
+        try (ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE)) {
+            String[] csvHeader = {"Product ID", "Name", "Descriptions", "Price", "Category ID"};
+            String[] nameMapping = {"id", "name", "description", "price", "categoryId"};
+
+            csvWriter.writeHeader(csvHeader);
+
+            for (ProductCsv productCsv : csvProducts) {
+                csvWriter.write(productCsv, nameMapping);
+            }
+        } catch (IOException e) {
+            throw new ExportToFIleException("Во время записи произошла ошибка.");
+        }
+    }
+
+    private List<ProductCsv> parseCsv(MultipartFile file) {
+        if (Optional.ofNullable(file).isPresent()) {
+            try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
+                CsvToBean<ProductCsv> csvToBean = new CsvToBeanBuilder<ProductCsv>(reader)
+                        .withType(ProductCsv.class)
+                        .withIgnoreLeadingWhiteSpace(true)
+                        .withSeparator(',')
+                        .build();
+                return csvToBean.parse();
+            } catch (Exception ex) {
+                throw new ParsingException(String.format("Ошибка во время преобразования данных: %s", ex.getMessage()));
+            }
+        }
+        return Collections.emptyList();
     }
 }

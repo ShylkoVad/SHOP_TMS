@@ -34,18 +34,19 @@ DROP TABLE IF EXISTS shop.categories;
 CREATE TABLE IF NOT EXISTS shop.categories (
     id   INT         NOT NULL AUTO_INCREMENT,
     name VARCHAR(45) NOT NULL,
+    image_id INT,
     PRIMARY KEY (id),
     UNIQUE INDEX IDX_CATEGORIES_CATEGORY_ID_UNIQUE (id ASC),
     UNIQUE INDEX IDX_CATEGORIES_NAME_UNIQUE (name ASC)
     );
 
-INSERT INTO shop.categories(name) VALUES('Платы Arduino');
-INSERT INTO shop.categories(name) VALUES('Наборы Arduino');
-INSERT INTO shop.categories(name) VALUES('Датчики Arduino');
-INSERT INTO shop.categories(name) VALUES('Дисплеи и индикаторы');
-INSERT INTO shop.categories(name) VALUES('Инструмент');
-INSERT INTO shop.categories(name) VALUES('Аксессуары для умного дома');
-INSERT INTO shop.categories(name) VALUES('Литература по программированию');
+INSERT INTO shop.categories(name, image_id) VALUES('Платы Arduino', 1);
+INSERT INTO shop.categories(name, image_id) VALUES('Наборы Arduino', 2);
+INSERT INTO shop.categories(name, image_id) VALUES('Датчики Arduino', 3);
+INSERT INTO shop.categories(name, image_id) VALUES('Дисплеи и индикаторы', 4);
+INSERT INTO shop.categories(name, image_id) VALUES('Инструмент', 5);
+INSERT INTO shop.categories(name, image_id) VALUES('Аксессуары для умного дома', 6);
+INSERT INTO shop.categories(name, image_id) VALUES('Литература по программированию', 7);
 --------------------------------------------------------
 --  Table shop.products
 --------------------------------------------------------
@@ -153,10 +154,10 @@ CREATE TABLE IF NOT EXISTS shop.orders (
     ON UPDATE CASCADE
     );
 --------------------------------------------------------
---  Table shop.order_lists
+--  Table shop.orders_products
 --------------------------------------------------------
-DROP TABLE IF EXISTS shop.order_lists;
-CREATE TABLE IF NOT EXISTS shop.order_lists (
+DROP TABLE IF EXISTS shop.orders_products;
+CREATE TABLE IF NOT EXISTS shop.orders_products (
     order_id   INT NOT NULL,
     product_id INT NOT NULL,
     PRIMARY KEY (order_id, product_id),
@@ -173,90 +174,150 @@ CREATE TABLE IF NOT EXISTS shop.order_lists (
 --  Table shop.images
 --------------------------------------------------------
 DROP TABLE IF EXISTS shop.images;
-CREATE TABLE IF NOT EXISTS shop.images
-(
+CREATE TABLE IF NOT EXISTS shop.images (
     id           INT          NOT NULL AUTO_INCREMENT,
     image_path    VARCHAR(150) NOT NULL,
-    category_id   INT          NULL,
-    product_id    INT          NULL,
     primary_image INT          NOT NULL,
     PRIMARY KEY (id),
-    UNIQUE INDEX IDX_IMAGES_ID_UNIQUE (id ASC),
-    CONSTRAINT FK_IMAGES_CATEGORIES_ID_CATEGORIES_ID
-    FOREIGN KEY (category_id)
-    REFERENCES shop.categories (id),
-    CONSTRAINT FK_IMAGES_PRODUCTS_ID_PRODUCTS_ID
+    UNIQUE INDEX IDX_IMAGES_ID_UNIQUE (id ASC)
+    );
+
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/product/boardArduino.png', 1);
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/product/kitArduino.png', 1);
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/product/sensorArduino.png', 1);
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/product/displaysAndIndicators.png', 1);
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/product/tool.png', 1);
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/product/smartHouse.png', 1);
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/product/literature.png', 1);
+
+
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/category/arduino/arduino_Uno_-_R3.png', 1);
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/category/arduino/arduino_UNO_R3_1.png', 0);
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/category/arduino/arduino_UNO_R3_2.png', 0);
+
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/category/arduino/arduino_Mega.png', 1);
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/category/arduino/arduino_Mega_1.png', 0);
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/category/arduino/arduino_Mega_2.png', 0);
+
+
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/category/kitArduino/scratchArduino.png', 1);
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/category/kitArduino/basicSetArduino2.0.png', 1);
+
+
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/category/sensorArduino/airQualitySensorV1.3.png', 1);
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/category/sensorArduino/electricitySensor.png', 1);
+
+
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/category/literature/learningArduino.png', 1);
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/category/literature/knigaProektyViktorPetin.png', 1);
+
+
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/category/tool/ZD-10D(12-0251).png', 1);
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/category/tool/YIHUA908+.png', 1);
+
+
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/category/displaysAndIndicators/Grove-4-DigitDisplay.png', 1);
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/category/displaysAndIndicators/CharacterLCD2x16.png', 1);
+
+
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/category/smartHouse/AqaraSmartDoorLockN100(Zigbee).png', 1);
+INSERT INTO shop.images (image_path, primary_image)
+VALUES ('../../images/category/smartHouse/HubE1HE1-G01.png', 1);
+
+--------------------------------------------------------
+--  Table shop.products_images
+--------------------------------------------------------
+DROP TABLE IF EXISTS shop.products_images;
+CREATE TABLE IF NOT EXISTS shop.products_images (
+    product_id           INT          NOT NULL,
+    images_id            INT          NOT NULL,
+    PRIMARY KEY (product_id , images_id),
+    CONSTRAINT FK_PRODUCTS_IMAGES_PRODUCT_ID_PRODUCTS_ID
     FOREIGN KEY (product_id)
-    REFERENCES shop.products (id)
+    REFERENCES products(id),
+    CONSTRAINT FK_PRODUCTS_IMAGES_IMAGE_ID_IMAGES_ID
+    FOREIGN KEY (images_id)
+    REFERENCES images(id)
     ON DELETE CASCADE
     ON UPDATE CASCADE
     );
 
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/product/boardArduino.png', 1, null, 1);
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/product/kitArduino.png', 2, null, 1);
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/product/sensorArduino.png', 3, null, 1);
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/product/displaysAndIndicators.png', 4, null, 1);
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/product/tool.png', 5, null, 1);
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/product/smartHouse.png', 6, null, 1);
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/product/literature.png', 7, null, 1);
+INSERT INTO shop.products_images (product_id, images_id)
+VALUES (1, 8);
+INSERT INTO shop.products_images (product_id, images_id)
+VALUES (1, 9);
+INSERT INTO shop.products_images (product_id, images_id)
+VALUES (1, 10);
+
+INSERT INTO shop.products_images (product_id, images_id)
+VALUES (2, 11);
+INSERT INTO shop.products_images (product_id, images_id)
+VALUES (2, 12);
+INSERT INTO shop.products_images (product_id, images_id)
+VALUES (2, 13);
+
+INSERT INTO shop.products_images (product_id, images_id)
+VALUES (3, 14);
+
+INSERT INTO shop.products_images (product_id, images_id)
+VALUES (4, 15);
+
+INSERT INTO shop.products_images (product_id, images_id)
+VALUES (5, 16);
+
+INSERT INTO shop.products_images (product_id, images_id)
+VALUES (6, 17);
+
+INSERT INTO shop.products_images (product_id, images_id)
+VALUES (7, 18);
+
+INSERT INTO shop.products_images (product_id, images_id)
+VALUES (8, 19);
+
+INSERT INTO shop.products_images (product_id, images_id)
+VALUES (9, 20);
+
+INSERT INTO shop.products_images (product_id, images_id)
+VALUES (10, 21);
+
+INSERT INTO shop.products_images (product_id, images_id)
+VALUES (11, 22);
+
+INSERT INTO shop.products_images (product_id, images_id)
+VALUES (12, 23);
+
+INSERT INTO shop.products_images (product_id, images_id)
+VALUES (13, 24);
+
+INSERT INTO shop.products_images (product_id, images_id)
+VALUES (14, 25);
 
 
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/category/arduino/arduino_Uno_-_R3.png', null, 1, 1);
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/category/arduino/arduino_UNO_R3_1.png', null, 1, 0);
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/category/arduino/arduino_UNO_R3_2.png', null, 1, 0);
 
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/category/arduino/arduino_Mega.png', null, 2, 1);
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/category/arduino/arduino_Mega_1.png', null, 2, 0);
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/category/arduino/arduino_Mega_2.png', null, 2, 0);
-
-
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/category/kitArduino/scratchArduino.png', null, 3, 1);
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/category/kitArduino/basicSetArduino2.0.png', null, 4, 1);
-
-
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/category/sensorArduino/airQualitySensorV1.3.png', null, 5, 1);
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/category/sensorArduino/electricitySensor.png', null, 6, 1);
-
-
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/category/literature/learningArduino.png', null, 7, 1);
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/category/literature/knigaProektyViktorPetin.png', null, 8, 1);
-
-
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/category/tool/ZD-10D(12-0251).png', null, 9, 1);
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/category/tool/YIHUA908+.png', null, 10, 1);
-
-
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/category/displaysAndIndicators/Grove-4-DigitDisplay.png', null, 11, 1);
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/category/displaysAndIndicators/CharacterLCD2x16.png', null, 12, 1);
-
-
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/category/smartHouse/AqaraSmartDoorLockN100(Zigbee).png', null, 13, 1);
-INSERT INTO shop.images (image_path, category_id, product_id, primary_image)
-VALUES ('../../images/category/smartHouse/HubE1HE1-G01.png', null, 14, 1);
 
 --------------------------------------------------------
 --  Table shop.statistic

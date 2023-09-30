@@ -26,11 +26,12 @@
     <div class="offset-1 mb-5">
         <div class="row g-0" th:each="product : ${cartProductsList}">
             <div class="col-md-2">
-                <th:block th:each="image : ${images}">
+                <th:block th:each="image : ${product.images}">
                     <img class="img-fluid rounded-start ml-3"
                          style="max-height:500px; width: auto;"
                          th:src="${image.imagePath}" alt="Card image"
-                         th:if="${product.id == image.product.id and image.primaryImage == 1}">
+                         th:if="${image.primaryImage == 1}"
+                    >
                 </th:block>
             </div>
             <div class="col-md-10">

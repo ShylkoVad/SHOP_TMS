@@ -3,6 +3,7 @@ package by.teachmeskills.shop.repositories.impl;
 import by.teachmeskills.shop.domain.Order;
 import by.teachmeskills.shop.repositories.OrderRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional
@@ -35,7 +37,8 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public void delete(int id) {
-        Order order = entityManager.find(Order.class, id);
+        Order order = Optional.ofNullable(entityManager.find(Order.class, id))
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Заказ с id %d не найден.", id)));
         entityManager.remove(order);
     }
 
@@ -46,7 +49,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public List<Order> findByDate(LocalDateTime date) {
-        return entityManager.createQuery("select o from Order o where o.created_at=:created_at", Order.class)
+        return entityManager.createQuery("select o from Order o where o.createdAt=:created_at", Order.class)
                 .setParameter("created_at", Timestamp.valueOf(date)).getResultList();
     }
 

@@ -28,12 +28,7 @@
             <div class="card w-25 m-2 text-center" th:each="category : ${categories}">
                 <a th:href="@{'/category/' + ${category.id}}">
                     <div class="card-body">
-                        <th:block th:each="image : ${images}">
-                            <img style="max-height:250px; max-width:250px;"
-                                 th:src="${image.imagePath}"
-                                 alt="Card image"
-                                 th:if="${category.id == image.category.id}">
-                        </th:block>
+                        <img class="card-img card-scale" style="max-height:250px; max-width:250px;" th:src="${category.image.imagePath}" alt="Card image">
                         <div class="h5 card-title text-black" th:text="${category.name}">Название категории</div>
                     </div>
                 </a>
@@ -65,7 +60,28 @@
             </th:block>
         </ul>
     </nav>
-</div>
 
+    <span th:text="${info}">Информация</span>
+
+    <div class="d-flex d-flex justify-content-around">
+        <form method="post" action="/category/csv/import" enctype="multipart/form-data" >
+            <div class="form-group">
+                <label style="font-size: 15px; font-weight: 500;" for="file">Добавить новые категории:</label>
+                <input type="file" class="form-control" id="file" name="file" size="50" required>
+            </div>
+            <button id="downloadBtn" type="submit" class="btn btn-outline-dark ml-4">Загрузить</button>
+        </form>
+        <div>
+            <p style="font-size: 15px; font-weight: 500;">Сохранить категории:</p>
+            <a class="btn btn-outline-dark ml-4" href="/category/csv/export" onclick="categoriesDownloaded()">Сохранить</a>
+        </div>
+    </div>
+
+</div>
+<script>
+    function categoriesDownloaded() {
+        window.confirm("Все категории успешно сохранены!")
+    }
+</script>
 </body>
 </html>

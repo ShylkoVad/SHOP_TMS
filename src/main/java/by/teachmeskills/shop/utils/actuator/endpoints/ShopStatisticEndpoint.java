@@ -1,6 +1,7 @@
 package by.teachmeskills.shop.utils.actuator.endpoints;
 
 import by.teachmeskills.shop.domain.StatisticEntity;
+import by.teachmeskills.shop.exceptions.EntityNotFoundException;
 import by.teachmeskills.shop.repositories.StatisticRepository;
 import by.teachmeskills.shop.services.CategoryService;
 import by.teachmeskills.shop.services.ProductService;
@@ -60,7 +61,7 @@ public class ShopStatisticEndpoint {
     }
 
     @DeleteOperation
-    public void deleteOperation(@Selector int id) {
+    public void deleteOperation(@Selector int id) throws EntityNotFoundException {
         statisticRepository.delete(id);
     }
 }

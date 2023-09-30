@@ -27,11 +27,10 @@
         <div class="row g-0">
             <div class="col-md-2">
                 <a th:href="@{'/product/' + ${product.id}}">
-                    <th:block th:each="image : ${images}">
+                    <th:block th:each="image : ${product.images}">
                         <img class="img-fluid rounded-start ml-3 ingCategory"
                              th:src="${image.imagePath}"
-                             th:if="${product.id == image.product.id and image.primaryImage == 1}"
-                             alt="Card image">
+                             th:if="${image.primaryImage == 1}" alt="Card image">
                     </th:block>
                 </a>
             </div>
@@ -44,7 +43,28 @@
             </div>
         </div>
     </div>
-</div>
 
+    <span th:text="${info}">Информация</span>
+
+    <div class="d-flex d-flex justify-content-around">
+        <form method="post" action="/product/csv/import" enctype="multipart/form-data" >
+            <div class="form-group">
+                <label style="font-size: 15px; font-weight: 500;" for="file">Добавить новые продукты:</label>
+                <input type="file" class="form-control" id="file" name="file" size="50" required>
+            </div>
+            <button id="downloadBtn" type="submit" class="btn btn-outline-dark ml-4">Загрузить</button>
+        </form>
+        <div>
+            <p style="font-size: 15px; font-weight: 500;">Сохранить продукты текущей категории:</p>
+            <a class="btn btn-outline-dark ml-4" th:href="@{'/product/csv/export/' + ${category_id}}" onclick="productsDownloaded()">Сохранить</a>
+        </div>
+    </div>
+
+</div>
+<script>
+    function productsDownloaded() {
+        window.confirm("Все продукты данной категории успешно сохранены!")
+    }
+</script>
 </body>
 </html>
