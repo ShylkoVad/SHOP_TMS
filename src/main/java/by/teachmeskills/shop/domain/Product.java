@@ -30,15 +30,12 @@ import java.util.List;
 @Table(name = "products")
 public class Product extends BaseEntity {
 
-//    @NotBlank(message = "Поле не может быть пустым!")
     @Column(name = "name")
     private String name;
 
-//    @NotBlank(message = "Поле не может быть пустым!")
     @Column(name = "description")
     private String description;
 
-//    @NotBlank(message = "Поле не может быть пустым!")
     @Min(value = 0)
     @Column(name = "price")
     private double price;
