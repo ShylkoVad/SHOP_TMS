@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import static by.teachmeskills.shop.enums.ShopConstants.PAGE_SIZE;
+
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
@@ -23,13 +25,17 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public ModelAndView openCategoryPage(@PathVariable int id) throws EntityNotFoundException {
-        return categoryService.getCategoryById(id);
+    public ModelAndView openCategoryPage(@PathVariable Integer id,
+                                         @RequestParam(required = false, defaultValue = "0") Integer pageNumber,
+                                         @RequestParam(required = false, defaultValue = "" + PAGE_SIZE) Integer pageSize) throws EntityNotFoundException {
+        return categoryService.getCategoryById(id, pageNumber, pageSize);
     }
 
     @PostMapping("/csv/import")
-    public ModelAndView importCategoriesFromCsv(@RequestParam("file") MultipartFile file) throws Exception {
-        return categoryService.importCategoriesFromCsv(file);
+    public ModelAndView importCategoriesFromCsv(@RequestParam("file") MultipartFile file,
+                                                @RequestParam(required = false, defaultValue = "0") Integer pageNumber,
+                                                @RequestParam(required = false, defaultValue = "" + PAGE_SIZE) Integer pageSize) throws EntityNotFoundException {
+        return categoryService.importCategoriesFromCsv(pageNumber, pageSize, file);
     }
 
     @GetMapping("/csv/export")

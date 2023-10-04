@@ -5,13 +5,13 @@ import by.teachmeskills.shop.csv.dto.OrderCsv;
 import by.teachmeskills.shop.domain.Order;
 import by.teachmeskills.shop.domain.User;
 import by.teachmeskills.shop.enums.RequestParamsEnum;
-import by.teachmeskills.shop.exceptions.EntityNotFoundException;
 import by.teachmeskills.shop.exceptions.ExportToFIleException;
 import by.teachmeskills.shop.exceptions.ParsingException;
 import by.teachmeskills.shop.repositories.OrderRepository;
 import by.teachmeskills.shop.services.OrderService;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
@@ -45,32 +45,35 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order create(Order entity) {
-        return orderRepository.create(entity);
+        return orderRepository.save(entity);
     }
 
     @Override
-    public List<Order> read() {
-        return orderRepository.read();
+    public void read() {
+        orderRepository.findAll();
     }
 
     @Override
     public Order update(Order entity) {
-        return orderRepository.update(entity);
+        return orderRepository.save(entity);
     }
 
     @Override
-    public void delete(int id) throws EntityNotFoundException {
-        orderRepository.delete(id);
+    public void delete(int id) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Заказа с id %d не найдено.", id)));
+        orderRepository.delete(order);
     }
 
     @Override
     public Order getOrderById(int id) {
-        return orderRepository.findById(id);
+        return orderRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Заказа с id %d не найдено.", id)));
     }
 
     @Override
     public List<Order> getOrderByDate(LocalDateTime date) {
-        return orderRepository.findByDate(date);
+        return orderRepository.findByCreatedAt(date);
     }
 
     @Override
@@ -94,7 +97,7 @@ public class OrderServiceImpl implements OrderService {
                         .toList())
                 .orElse(null);
         if (Optional.ofNullable(newOrders).isPresent()) {
-            newOrders.forEach(orderRepository::create);
+            newOrders.forEach(orderRepository::save);
         }
 
         List<Order> orders = getOrdersByUserId(user.getId());

@@ -3,7 +3,6 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../../css/product.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -15,11 +14,14 @@
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
 
+    <link th:href="@{/styles/product.css}" rel="stylesheet" />
     <title th:text="${product.name}">Название продукта</title>
+
 </head>
 <body>
 
 <div th:insert="~{header.html}"></div>
+
 <div class="container-fluid">
     <h2 class="py-4" style="text-align: center" th:text="${product.name}">Название продукта</h2>
     <div class="offset-1 mb-5">
@@ -28,7 +30,7 @@
                 <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel"
                      style="margin-top: 30px; margin-bottom: 30px">
                     <div class="carousel-inner">
-                        <th:block th:each="image : ${images}">
+                        <th:block th:each="image : ${product.images}">
                             <div class="carousel-item active" th:if="${image.primaryImage == 1}">
                                 <img th:src="${image.imagePath}"
                                      class="d-block img-fluid rounded-start ml-3"

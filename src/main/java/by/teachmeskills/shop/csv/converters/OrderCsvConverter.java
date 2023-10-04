@@ -36,7 +36,7 @@ public class OrderCsvConverter {
 
     public Order fromCsv(OrderCsv orderCsv) {
         return Order.builder()
-                .user(Optional.ofNullable(userRepository.findById(orderCsv.getUserId()))
+                .user(userRepository.findById(orderCsv.getUserId())
                         .orElseThrow(() -> new EntityNotFoundException(String.format("Пользователя с id %d не найдено.", orderCsv.getUserId()))))
                 .price(orderCsv.getPrice())
                 .createdAt(Timestamp.valueOf(LocalDateTime.parse(orderCsv.getCreatedAt())))

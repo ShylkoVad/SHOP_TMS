@@ -3,9 +3,6 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../../css/home.css">
-    <link rel="stylesheet" type="text/css" href="../../css/product.css">
-    <link rel="stylesheet" type="text/css" href="../../css/search.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -17,34 +14,147 @@
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
 
+    <link th:href="@{/styles/header.css}" rel="stylesheet"/>
+    <link th:href="@{/styles/product.css}" rel="stylesheet"/>
+    <link th:href="@{/styles/search.css}" rel="stylesheet"/>
+    <link th:href="@{/styles/home.css}" rel="stylesheet"/>
+
     <title>Страница поиска</title>
 </head>
+
 <body>
 
 <div th:insert="~{header.html}"></div>
-<div class="container">
+
+<div class="container-fluid">
     <h1 style="text-align: center">Результаты поиска:</h1>
 
-    <div class="container-fluid">
-        <div class="row d-flex justify-content-center">
-            <div class="card w-25 m-1" type="product" th:each="product : ${products}">
-                <div class="card-body">
-                    <a th:href="@{'/product/' + ${product.id}}">
-                        <h5 class="card-title text-black text-center"
-                            th:text="${product.name}">Название продукта</h5>
-                        <th:block th:each="image : ${product.images}">
-                            <img class="d-block img-fluid rounded-start m-3"
-                                 style="max-height:200px; width: auto;"
-                                 th:src="${image.imagePath}" alt="Card image"
-                                 th:if="${image.primaryImage == 1}">
-                        </th:block>
-                    </a>
-                    <p class="card-text text-truncate d-inline-block"
-                       style="max-width: 250px;" th:text="${product.description}">Описание продукта</p>
+    <div class="row">
+
+<div class="col-1"></div>
+
+        <div class="col-2">
+            <th:block th:if="${not #lists.isEmpty(products)}">
+                <div class="dropdown_home mb-3">
+                    <button type="button" class="dropbtn_home text-black btn-outline-secondary dropdown-toggle ml-3"
+                            data-bs-toggle="dropdown" aria-expanded="false"
+                    >Размер страницы
+                    </button>
+                    <div class="dropdown-content_home">
+                        <a class="dropdown-item"
+                           th:classappend="${pageSize == selectedPageSize ? 'active' : ''}"
+                           th:href="@{'/search?pageNumber=0&pageSize=' + ${pageSize}}"
+                           th:text="${pageSize}">Размер страницы</a>
+                        <a class="dropdown-item"
+                           th:classappend="${pageSize * 2 == selectedPageSize ? 'active' : ''}"
+                           th:href="@{'/search?pageNumber=0&pageSize=' + ${pageSize * 2}}"
+                           th:text="${pageSize * 2}">
+                            Двойной размер страницы</a>
+                        <a class="dropdown-item"
+                           th:classappend="${pageSize * 3 == selectedPageSize ? 'active' : ''}"
+                           th:href="@{'/search?pageNumber=0&pageSize=' + ${pageSize * 3}}"
+                           th:text="${pageSize * 3}">Тройной размер страницы</a>
+                    </div>
                 </div>
-                <div class="card-footer" th:text="${product.price + ' р.'}">Цена</div>
+            </th:block>
+
+            <div class="sideBar">
+                <div>
+                    <h5>Расширенный поиск</h5>
+                    <form method="post" action="/search">
+                        <div class="form-group">
+                            <label for="searchKey">Название товара:</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="searchKey"
+                                   placeholder="Введите название либо описание"
+                                   name="searchKey"
+                                   minlength="3">
+                        </div>
+                        <div class="form-group">
+                            <label for="priceFrom">Цена от:</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="priceFrom"
+                                   placeholder="Введите цену..."
+                                   name="priceFrom">
+                        </div>
+                        <div class="form-group">
+                            <label for="priceTo">Цена до:</label>
+                            <input type="text"
+                                   class="form-control "
+                                   id="priceTo"
+                                   placeholder="Введите цену..."
+                                   name="priceTo">
+                        </div>
+                        <div class="form-group">
+                            <label for="categoryName">Название категории:</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="categoryName"
+                                   placeholder="Введите название категории..."
+                                   name="categoryName"
+                                   minlength="3">
+                        </div>
+                        <button class="btn btn-outline-dark">Найти</button>
+                    </form>
+                </div>
             </div>
         </div>
+
+        <div class="col-9">
+            <div class="row d-flex justify-content-center">
+                <div class="card col-5 m-1" type="product"
+                     th:each="product : ${products}">
+                    <div class="card-body">
+                        <a th:href="@{'/product/' + ${product.id}}">
+                            <h5 class="card-title text-black text-center"
+                                th:text="${product.name}">Название продукта</h5>
+                            <th:block th:each="image : ${product.images}">
+                                <img class="d-block img-fluid rounded-start m-3"
+                                     style="max-height:200px; width: auto;"
+                                     th:src="${image.imagePath}" alt="Card image"
+                                     th:if="${image.primaryImage == 1}">
+                            </th:block>
+                        </a>
+                        <p class="card-text text-truncate d-inline-block"
+                           style="max-width: 250px;"
+                           th:text="${product.description}">Описание продукта</p>
+                    </div>
+                    <div class="card-footer"
+                         th:text="${product.price + ' р.'}">Цена
+                    </div>
+                </div>
+            </div>
+
+            <nav aria-label="Пример навигации по страницам">
+                <ul class="pagination justify-content-center mt-5">
+                    <th:block th:if="${totalPages > 1}">
+                        <li class="page-item"
+                            th:classappend="${pageNumber == 1 ? 'disabled' : ''}">
+                            <a class="page-link" style="color: black"
+                               th:href="@{'/search?pageNumber=' + ${pageNumber - 2} + '&pageSize=' + ${selectedPageSize}}"
+                               tabindex="-1"
+                            >Предыдущая</a>
+                        </li>
+                        <th:block th:each="i: ${#numbers.sequence(1, totalPages)}">
+                            <li class="page-item"
+                                th:classappend="${pageNumber == i ? 'active' : ''}">
+                                <a class="page-link" style="color: black"
+                                   th:href="@{'/search?pageNumber=' + ${i - 1} + '&pageSize=' + ${selectedPageSize}}"
+                                   th:text="${i}">Номер страницы</a>
+                            </li>
+                        </th:block>
+                        <li class="page-item"
+                            th:classappend="${pageNumber == totalPages? 'disabled' : ''}">
+                            <a class="page-link" style="color: black"
+                               th:href="@{'/search?pageNumber=' + ${pageNumber} + '&pageSize=' + ${selectedPageSize}}">Следующая</a>
+                        </li>
+                    </th:block>
+                </ul>
+            </nav>
+        </div>
+
     </div>
 </div>
 

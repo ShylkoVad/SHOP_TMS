@@ -6,6 +6,7 @@ public enum RequestParamsEnum {
     SURNAME("surname"),
     BIRTHDAY("birthday"),
     EMAIL("email"),
+    BALANCE("balance"),
     LOGIN("email"),
     PASSWORD("password"),
     USER("user"),
@@ -22,7 +23,11 @@ public enum RequestParamsEnum {
     SEARCH_PARAM("search_param"),
     TIME_IN_MILLIS_PARAM("timeInMillis"),
     ERROR_PARAM("error"),
-    USER_ID("user_id");
+    USER_ID("user_id"),
+    PAGE_NUMBER("pageNumber"),
+    PAGE_SIZE("pageSize"),
+    SELECTED_PAGE_SIZE("selectedPageSize"),
+    TOTAL_PAGES("totalPages");
 
     private final String value;
 
