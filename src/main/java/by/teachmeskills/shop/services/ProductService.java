@@ -1,7 +1,7 @@
 package by.teachmeskills.shop.services;
 
 import by.teachmeskills.shop.domain.Product;
-import by.teachmeskills.shop.domain.Search;
+import by.teachmeskills.shop.domain.SearchDto;
 import by.teachmeskills.shop.exceptions.EntityNotFoundException;
 import by.teachmeskills.shop.exceptions.ExportToFIleException;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,7 +18,7 @@ public interface ProductService {
 
     List<Product> getProductsByCategoryId(int categoryId, Pageable pageable) throws EntityNotFoundException;
 
-    ModelAndView getProductsBySearchParameters(Search search, int pageNumber, int pageSize);
+    ModelAndView getProductsBySearchParameters(SearchDto searchDto, int pageNumber, int pageSize);
 
     ModelAndView getProductData(int id);
 

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Search {
+public class SearchDto {
     private String searchKey;
     private Double priceFrom;
     private Double priceTo;

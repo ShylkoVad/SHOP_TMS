@@ -1,6 +1,6 @@
 package by.teachmeskills.shop.controllers;
 
-import by.teachmeskills.shop.domain.Search;
+import by.teachmeskills.shop.domain.SearchDto;
 import by.teachmeskills.shop.services.ProductService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,21 +26,21 @@ public class SearchController {
     }
 
     @GetMapping
-    public ModelAndView openSearchPage(@SessionAttribute(name = SEARCH, required = false) Search search,
+    public ModelAndView openSearchPage(@SessionAttribute(name = SEARCH, required = false) SearchDto searchDto,
                                        @RequestParam(required = false, defaultValue = "0") Integer pageNumber,
                                        @RequestParam(required = false, defaultValue = "" + PAGE_SIZE) Integer pageSize) {
-        return productService.getProductsBySearchParameters(search, pageNumber, pageSize);
+        return productService.getProductsBySearchParameters(searchDto, pageNumber, pageSize);
     }
 
     @PostMapping
-    public ModelAndView search(@ModelAttribute(SEARCH) Search search,
+    public ModelAndView search(@ModelAttribute(SEARCH) SearchDto searchDto,
                                @RequestParam(required = false, defaultValue = "0") Integer pageNumber,
                                @RequestParam(required = false, defaultValue = "" + PAGE_SIZE) Integer pageSize) {
-        return productService.getProductsBySearchParameters(search, pageNumber, pageSize);
+        return productService.getProductsBySearchParameters(searchDto, pageNumber, pageSize);
     }
 
     @ModelAttribute(SEARCH)
-    public Search setUpSearch() {
-        return new Search();
+    public SearchDto setUpSearch() {
+        return new SearchDto();
     }
 }

@@ -3,7 +3,7 @@ package by.teachmeskills.shop.services.impl;
 import by.teachmeskills.shop.csv.converters.ProductCsvConverter;
 import by.teachmeskills.shop.csv.dto.ProductCsv;
 import by.teachmeskills.shop.domain.Product;
-import by.teachmeskills.shop.domain.Search;
+import by.teachmeskills.shop.domain.SearchDto;
 import by.teachmeskills.shop.enums.ShopConstants;
 import by.teachmeskills.shop.exceptions.ExportToFIleException;
 import by.teachmeskills.shop.exceptions.ParsingException;
@@ -71,26 +71,25 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ModelAndView getProductsBySearchParameters(Search search, int pageNumber, int pageSize) {
+    public ModelAndView getProductsBySearchParameters(SearchDto searchDto, int pageNumber, int pageSize) {
         ModelMap model = new ModelMap();
 
-        if (search != null) {
-            if (search.getSearchKey() != null || search.getPriceFrom() != null || search.getPriceTo() != null || search.getCategoryName() != null) {
-                Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by("name").ascending());
-                ProductSearchSpecification productSearchSpecification = new ProductSearchSpecification(search);
-                List<Product> products = productRepository.findAll(productSearchSpecification, paging).getContent();
+        if (searchDto != null) {
 
-                if (!products.isEmpty()) {
-                    long totalItems = productRepository.count(productSearchSpecification);
-                    int totalPages = (int) (Math.ceil((double) totalItems / pageSize));
+            Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by("name").ascending());
+            ProductSearchSpecification productSearchSpecification = new ProductSearchSpecification(searchDto);
+            List<Product> products = productRepository.findAll(productSearchSpecification, paging).getContent();
 
-                    model.addAttribute(PRODUCTS.getValue(), products);
-                    model.addAttribute("totalPages", totalPages);
-                    model.addAttribute(PAGE_NUMBER.getValue(), pageNumber + 1);
-                    model.addAttribute(PAGE_SIZE.getValue(), ShopConstants.PAGE_SIZE);
-                } else {
-                    model.addAttribute(INFO.getValue(), PRODUCTS_NOT_FOUND_INFO.getInfo());
-                }
+            if (!products.isEmpty()) {
+                long totalItems = productRepository.count(productSearchSpecification);
+                int totalPages = (int) (Math.ceil((double) totalItems / pageSize));
+
+                model.addAttribute(PRODUCTS.getValue(), products);
+                model.addAttribute("totalPages", totalPages);
+                model.addAttribute(PAGE_NUMBER.getValue(), pageNumber + 1);
+                model.addAttribute(PAGE_SIZE.getValue(), ShopConstants.PAGE_SIZE);
+            } else {
+                model.addAttribute(INFO.getValue(), PRODUCTS_NOT_FOUND_INFO.getInfo());
             }
         }
         model.addAttribute(SELECTED_PAGE_SIZE.getValue(), pageSize);
