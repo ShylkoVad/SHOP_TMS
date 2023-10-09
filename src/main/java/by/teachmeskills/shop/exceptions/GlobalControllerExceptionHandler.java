@@ -34,4 +34,13 @@ public class GlobalControllerExceptionHandler {
         modelMap.addAttribute(ERROR_PARAM.getValue(), ex.getMessage());
         return new ModelAndView(ERROR_PAGE.getPath(), modelMap);
     }
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(IncorrectUserDataException.class)
+    public ModelAndView handlerIncorrectDataException(Exception ex) {
+        ModelMap modelMap = new ModelMap();
+        modelMap.addAttribute(ERROR_PARAM.getValue(),
+                String.format("Введены неверные данные: %s.",
+                        ex.getMessage()));
+        return new ModelAndView(ERROR_PAGE.getPath(), modelMap);
+    }
 }

@@ -3,10 +3,12 @@ package by.teachmeskills.shop.controllers;
 import by.teachmeskills.shop.exceptions.EntityNotFoundException;
 import by.teachmeskills.shop.services.CategoryService;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
+import static by.teachmeskills.shop.enums.ShopConstants.PAGE_SIZE;
 
 @RestController
 @RequestMapping("/home")
@@ -16,14 +18,9 @@ public class HomeController {
     public HomeController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
-
     @GetMapping
-    public ModelAndView openHomePage() throws EntityNotFoundException {
-        return categoryService.getCategories();
-    }
-
-    @GetMapping("/{page}")
-    public ModelAndView changePage(@PathVariable(value = "page") int currentPage) throws EntityNotFoundException {
-        return categoryService.getPaginatedCategories(currentPage);
+    public ModelAndView openHomePage(@RequestParam(required = false, defaultValue = "0") Integer pageNumber,
+                                     @RequestParam(required = false, defaultValue = "" + PAGE_SIZE) Integer pageSize) throws EntityNotFoundException {
+        return categoryService.getAllCategories(pageNumber, pageSize);
     }
 }

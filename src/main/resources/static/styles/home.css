@@ -1,0 +1,40 @@
+/* Кнопка выпадающего списка */
+.dropbtn_home {
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+}
+ /*Контейнер <div> - необходим для размещения выпадающего содержимого */
+.dropdown_home {
+    position: relative;
+    display: inline-block;
+}
+
+ /*Выпадающее содержимое (скрыто по умолчанию) */
+.dropdown-content_home {
+    display: none;
+    position: absolute;
+    background-color: lightgrey;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 99999999;
+}
+
+.dropdown_home:hover .dropdown-content_home {
+    display: block;
+}
+
+/* Изменение цвета выпадающих ссылок при наведении курсора */
+.dropdown-content_home a:hover {
+    background-color: white;
+    text-decoration: none;
+    color: red;
+}
+/* Ссылки внутри выпадающего списка */
+.dropdown-content_home a {
+    color: black;
+    padding: 10px 10px;
+    text-decoration: none;
+    display: block;
+}

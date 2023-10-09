@@ -16,6 +16,6 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "statistic")
-public class StatisticEntity extends BaseEntity{
+public class Statistic extends BaseEntity{
     private String description;
 }

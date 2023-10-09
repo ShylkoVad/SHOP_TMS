@@ -3,7 +3,6 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/home.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -15,10 +14,41 @@
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
 
+    <link th:href="@{/styles/header.css}" rel="stylesheet"/>
+
     <title>Контакт</title>
 </head>
 <body>
 <div th:insert="~{header.html}"></div>
-<h3 class="text-center">Данная страница в разработке</h3>
+
+<div class="container-fluid">
+
+    <div class="row mt-5">
+
+        <div class="col-2 offset-1">
+            <h5>Контактные данные</h5>
+            <p>Телефон:</p>
+            <div>
+            <a href="mailto: shylkovad@gmail.com">Отправить письмо</a>
+            </div>
+            <div>
+            <a href="tg://resolve?domain=@Vad_wad">Написать в Telegram</a>
+            </div>
+
+            <p>Ссылка на GitHub:</p>
+        </div>
+
+        <div class="col-8">
+            <h3>Место расположение:</h3>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2351.7208776530065!2d27.564716377115328!3d53.
+    88339003440473!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46dbcfd68419e469%3A0xdca067d9a5da34f9!2z0YPQu9
+    C40YbQsCDQnNCw0Y_QutC-0LLRgdC60L7Qs9C-IDgsINCc0LjQvdGB0Lo!5e0!3m2!1sru!2sby!4v1696444527543!5m2!1sru!2sby"
+                    width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+
+    </div>
+</div>
 </body>
 </html>

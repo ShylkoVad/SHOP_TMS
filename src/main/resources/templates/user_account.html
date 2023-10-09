@@ -3,9 +3,6 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../../css/home.css">
-    <link rel="stylesheet" type="text/css" href="../../css/user_account.css">
-    <link rel="stylesheet" type="text/css" href="../../css/product.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -17,6 +14,9 @@
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
 
+    <link th:href="@{/styles/header.css}" rel="stylesheet" />
+    <link th:href="@{/styles/product.css}" rel="stylesheet" />
+    <link th:href="@{/styles/user_account.css}" rel="stylesheet" />
 
     <title>Личный кабинет</title>
 
@@ -25,25 +25,27 @@
 <span th:text="${info}">Информация</span>
 
 <div th:insert="~{header.html}"></div>
+
 <div class="container">
 
-    <button class="tablink m-2" onclick="openTab('personalArea', this, 'white')" id="defaultOpen">Личный кабинет
-    </button>
+    <button class="tablink m-2" onclick="openTab('personalArea', this, 'white')" id="defaultOpen">Личный кабинет</button>
     <button class="tablink m-2" onclick="openTab('historyOrders', this, 'white')">История заказов</button>
     <button class="tablink m-2" onclick="openTab('updateUserDataImpl', this, 'white')">Обновление данных</button>
 
     <div id="personalArea" class="tabcontent text-start">
         <div class="border border-dark-subtle m-5 rounded-4">
             <div class="row">
+
                 <div class="col-1 h5 m-2">Имя</div>
                 <div class=" col-4 data_user h5 border border-dark-subtle m-2 rounded-2"
                      th:text="${name}">
-
                 </div>
+
                 <div class=" col-1 h5 m-2">Фамилия</div>
                 <div class=" col-4 data_user h5 border border-dark-subtle m-2 rounded-2"
                      th:text="${surname}">
                 </div>
+
             </div>
 
             <div class="row">
@@ -83,20 +85,23 @@
                         <th:block th:each="product : ${order.products}">
                             <a class="col-2 row border border-dark-subtle m-1 rounded-4"
                                th:href="@{'/product/' + ${product.id}}">
-                                <div class="col-12 ml-4 text-black orderAccountName" th:text="${product.name}">Имя
-                                    продукта
+                                <div class="col-12 ml-4 text-black orderAccountName"
+                                     th:text="${product.name}">Имя продукта
                                 </div>
                                 <th:block th:each="image : ${product.images}">
                                     <img style="max-height:200px; width: 200px;" class="card-img"
                                          th:src="${image.imagePath}"
-                                         th:if="${image.primaryImage == 1}" alt="Card image">
+                                         th:if="${image.primaryImage == 1}"
+                                         alt="Card image">
                                 </th:block>
-                                <p class="ml-4 text-black orderAccountName" th:text="${product.price + ' р.'}">Цена</p>
+                                <p class="ml-4 text-black orderAccountName"
+                                   th:text="${product.price + ' р.'}">Цена</p>
                             </a>
                         </th:block>
 
                     </div>
-                    <div class="h5 m-2" th:text="${'Итоговая стоимость заказа: ' + order.price + ' р.'}">Стоимость
+                    <div class="h5 m-2"
+                         th:text="${'Итоговая стоимость заказа: ' + order.price + ' р.'}">Стоимость
                         заказа
                     </div>
                 </div>
@@ -106,7 +111,8 @@
         <div class="d-flex m-5">
             <div>
                 <div style="font-size: 15px; font-weight: 500;">Сохранить все заказы пользователя:
-                    <a class="btn btn-outline-dark ml-4" th:href="@{'/account/csv/export/' + ${user_id}}"
+                    <a class="btn btn-outline-dark ml-4"
+                       th:href="@{'/account/csv/export/' + ${user_id}}"
                        onclick="ordersDownloaded()">Сохранить</a>
                 </div>
             </div>
@@ -122,15 +128,15 @@
             </div>
         </div>
     </div>
-
-
 </div>
+
 <script>
     function ordersDownloaded() {
         window.confirm("Все заказы данного пользователя успешно сохранены!")
     }
 </script>
 
-<script src="/script/user_account.js"></script>
+<script type="text/javascript" th:src="@{/script/user_account.js}"></script>
+
 </body>
 </html>

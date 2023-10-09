@@ -3,7 +3,6 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../../css/home.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -15,20 +14,46 @@
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
 
+    <link th:href="@{/styles/home.css}" rel="stylesheet" />
+
     <title>Каталог</title>
 
 </head>
+
 <body>
 
 <div th:insert="~{header.html}"></div>
 <div>
     <h2 class="fs-3 text-center">Каталог</h2>
+
+    <div class="dropdown_home ml-3">
+        <button type="button" class="dropbtn_home text-black btn-outline-secondary dropdown-toggle ml-3"
+                data-bs-toggle="dropdown" aria-expanded="false">
+            Размер страницы</button>
+        <div class="dropdown-content_home">
+            <a class="dropdown-item"
+               th:classappend="${pageSize == selectedPageSize ? 'active' : ''}"
+               th:href="@{'/home?pageNumber=0&pageSize=' + ${pageSize}}"
+               th:text="${pageSize}">Размер страницы</a>
+            <a class="dropdown-item"
+               th:classappend="${pageSize * 2 == selectedPageSize ? 'active' : ''}"
+               th:href="@{'/home?pageNumber=0&pageSize=' + ${pageSize * 2}}"
+                th:text="${pageSize * 2}">
+                Двойной размер страницы</a>
+            <a class="dropdown-item"
+               th:classappend="${pageSize * 3 == selectedPageSize ? 'active' : ''}"
+               th:href="@{'/home?pageNumber=0&pageSize=' + ${pageSize * 3}}"
+               th:text="${pageSize * 3}">Тройной размер страницы</a>
+        </div>
+    </div>
+
     <div class="container-fluid">
         <div class="row d-flex justify-content-center">
             <div class="card w-25 m-2 text-center" th:each="category : ${categories}">
                 <a th:href="@{'/category/' + ${category.id}}">
                     <div class="card-body">
-                        <img class="card-img card-scale" style="max-height:250px; max-width:250px;" th:src="${category.image.imagePath}" alt="Card image">
+                        <img class="card-img card-scale" style="max-height:250px; max-width:250px;"
+                             th:src="${category.image.imagePath}" alt="Card image">
                         <div class="h5 card-title text-black" th:text="${category.name}">Название категории</div>
                     </div>
                 </a>
@@ -39,23 +64,22 @@
     <nav aria-label="Пример навигации по страницам">
         <ul class="pagination justify-content-center mt-5">
             <th:block th:if="${totalPages > 1}">
-                <li class="page-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
+                <li class="page-item" th:classappend="${pageNumber == 1 ? 'disabled' : ''}">
                     <a class="page-link" style="color: black"
-                       th:href="@{'/home/' + ${currentPage - 1}}"
+                       th:href="@{'/home?pageNumber=' + ${pageNumber - 2} + '&pageSize=' + ${selectedPageSize}}"
                        tabindex="-1"
                     >Предыдущая</a>
                 </li>
                 <th:block th:each="i: ${#numbers.sequence(1, totalPages)}">
-                    <li class="page-item"
-                        th:classappend="${currentPage == i ? 'active' : ''}">
+                    <li class="page-item" th:classappend="${pageNumber == i ? 'active' : ''}">
                         <a class="page-link" style="color: black"
-                           th:href="@{'/home/' + ${i}}"
+                           th:href="@{'/home?pageNumber=' + ${i - 1} + '&pageSize=' + ${selectedPageSize}}"
                            th:text="${i}">Номер страницы</a>
                     </li>
                 </th:block>
-                <li class="page-item" th:classappend="${currentPage == totalPages? 'disabled' : ''}">
+                <li class="page-item" th:classappend="${pageNumber == totalPages? 'disabled' : ''}">
                     <a class="page-link" style="color: black"
-                       th:href="@{'/home/' + ${currentPage + 1}}">Следующая</a>
+                       th:href="@{'/home?pageNumber=' + ${pageNumber} + '&pageSize=' + ${selectedPageSize}}">Следующая</a>
                 </li>
             </th:block>
         </ul>
@@ -63,17 +87,19 @@
 
     <span th:text="${info}">Информация</span>
 
-    <div class="d-flex d-flex justify-content-around">
-        <form method="post" action="/category/csv/import" enctype="multipart/form-data" >
+    <div class="d-flex justify-content-around">
+        <form method="post" th:action="@{'/category/csv/import?pageNumber=0&pageSize=' + ${selectedPageSize}}"
+              enctype="multipart/form-data">
             <div class="form-group">
                 <label style="font-size: 15px; font-weight: 500;" for="file">Добавить новые категории:</label>
                 <input type="file" class="form-control" id="file" name="file" size="50" required>
             </div>
-            <button id="downloadBtn" type="submit" class="btn btn-outline-dark ml-4">Загрузить</button>
+            <button id="downloadBtn" type="submit" class="btn btn-outline-dark m-4">Загрузить</button>
         </form>
         <div>
             <p style="font-size: 15px; font-weight: 500;">Сохранить категории:</p>
-            <a class="btn btn-outline-dark ml-4" href="/category/csv/export" onclick="categoriesDownloaded()">Сохранить</a>
+            <a class="btn btn-outline-dark ml-4" href="/category/csv/export"
+               onclick="categoriesDownloaded()">Сохранить</a>
         </div>
     </div>
 
