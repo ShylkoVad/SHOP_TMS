@@ -19,6 +19,9 @@ CREATE TABLE IF NOT EXISTS shop.users (
 INSERT INTO shop.users(name, surname, birthday, balance, email, password, street, accommodation_number, flat_number, phone_number)
 VALUES ('Вадим', 'Шилько', '1984-09-08', 150.00, 'shilko_vad@mail.ru', '1234', 'ул. Маяковского', '8', '167', '+375297191205');
 
+INSERT INTO shop.users(name, surname, birthday, balance, email, password, street, accommodation_number, flat_number, phone_number)
+VALUES ('Алеся', 'Дымович', '2002-10-07', 0.00, '23@mail.ru', '0000', 'пр. Независимости', '123', '58', '+375291111111');
+
 CREATE TABLE IF NOT EXISTS shop.categories (
     id   INT         NOT NULL AUTO_INCREMENT,
     name VARCHAR(45) NOT NULL,
