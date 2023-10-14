@@ -5,20 +5,17 @@ import by.teachmeskills.shop.exceptions.ExportToFIleException;
 import by.teachmeskills.shop.services.OrderService;
 import by.teachmeskills.shop.services.UserService;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import static by.teachmeskills.shop.enums.ShopConstants.USER;
-
 @RestController
-@SessionAttributes({USER})
 @RequestMapping("/account")
 public class UserAccountController {
     private final UserService userService;
@@ -30,8 +27,9 @@ public class UserAccountController {
     }
 
     @GetMapping
-    public ModelAndView openAccountPage(User user) {
-        return userService.generateAccountPage(user);
+    public ModelAndView openAccountPage() {
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userService.generateAccountPage(userEmail);
     }
 
     @PostMapping("/csv/import")
