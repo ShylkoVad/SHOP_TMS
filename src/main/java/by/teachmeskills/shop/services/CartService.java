@@ -6,6 +6,8 @@ import by.teachmeskills.shop.domain.Product;
 import by.teachmeskills.shop.domain.User;
 import by.teachmeskills.shop.exceptions.EntityNotFoundException;
 import by.teachmeskills.shop.repositories.ProductRepository;
+import by.teachmeskills.shop.repositories.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,10 +25,12 @@ import static by.teachmeskills.shop.enums.RequestParamsEnum.SHOPPING_CART_PRODUC
 public class CartService {
     private final ProductRepository productRepository;
     private final OrderService orderService;
+    private final UserRepository userRepository;
 
-    public CartService(ProductRepository productRepository, OrderService orderService) {
+    public CartService(ProductRepository productRepository, OrderService orderService, UserRepository userRepository) {
         this.productRepository = productRepository;
         this.orderService = orderService;
+        this.userRepository = userRepository;
     }
 
     public ModelAndView addProductToCart(String id, Cart shopCart) {
@@ -35,7 +39,6 @@ public class CartService {
         int productId = Integer.parseInt(id);
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new jakarta.persistence.EntityNotFoundException(String.format("Продукта с id %s не найдено.", id)));
-        shopCart.addProduct(product);
         shopCart.addProduct(product);
 
         model.addAttribute(PRODUCT.getValue(), product);
@@ -65,7 +68,11 @@ public class CartService {
         return new ModelAndView(SHOPPING_CART_PAGE.getPath(), model);
     }
 
-    public ModelAndView checkout(Cart shopCart, User user) {
+    public ModelAndView checkout(Cart shopCart) {
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        User existingUser = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new jakarta.persistence.EntityNotFoundException(String.format("Пользователя с почтой %s не найдено.", userEmail)));
+
         ModelMap model = new ModelMap();
 
         List<Product> productList = shopCart.getProducts();
@@ -78,7 +85,7 @@ public class CartService {
                 .createdAt(Timestamp.valueOf(LocalDateTime.now()))
                 .price(shopCart.getTotalPrice())
                 .products(productList)
-                .user(user)
+                .user(existingUser)
                 .build();
 
         orderService.create(order);
