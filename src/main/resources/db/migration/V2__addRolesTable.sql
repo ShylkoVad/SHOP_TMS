@@ -13,6 +13,3 @@ CREATE TABLE IF NOT EXISTS users_roles (
 
 INSERT INTO shop.roles(name) VALUES ('ADMIN');
 INSERT INTO shop.roles(name) VALUES ('USER');
-
-INSERT INTO shop.users_roles(user_id, role_id) VALUES (1, 1);
-INSERT INTO shop.users_roles(user_id, role_id) VALUES (2, 2);

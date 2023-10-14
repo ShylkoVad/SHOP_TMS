@@ -3,6 +3,10 @@ package by.teachmeskills.shop.domain;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
@@ -30,37 +34,43 @@ import java.util.List;
 @Entity
 public class User extends BaseEntity {
 
-    @NotNull
-    @NotBlank(message = "Поле должно быть заполнено!")
-    @Pattern(regexp = "^[А-Я][Ёа-яё]+$", message = "Введен неверный формат Имени!")
-    @Size(min = 2, message = "Имя не может быть менее 2 символов!")
+    public interface UserRegistration {
+    }
+
+    public interface UserLogin {
+    }
+
+    @NotNull (message = "Поле должно быть заполнено!", groups = UserRegistration.class)
+    @NotBlank(message = "Поле должно быть заполнено!", groups = UserRegistration.class)
+    @Pattern(regexp = "^[А-Я][Ёа-яё]+$", message = "Введен неверный формат Имени!", groups = UserRegistration.class)
+    @Size(min = 2, message = "Имя не может быть менее 2 символов!", groups = UserRegistration.class)
     @Column(name = "name")
     private String name;
 
-    @NotNull
-    @NotBlank(message = "Поле должно быть заполнено!")
-    @Pattern(regexp = "^[А-Я][Ёа-яё]+$", message = "Введен неверный формат Фамилии!")
-    @Size(min = 2, message = "Фамилия не может быть менее 2 символов!")
+    @NotNull (message = "Поле должно быть заполнено!", groups = UserRegistration.class)
+    @NotBlank(message = "Поле должно быть заполнено!", groups = UserRegistration.class)
+    @Pattern(regexp = "^[А-Я][Ёа-яё]+$", message = "Введен неверный формат Фамилии!", groups = UserRegistration.class)
+    @Size(min = 2, message = "Фамилия не может быть менее 2 символов!", groups = UserRegistration.class)
     @Column(name = "surname")
     private String surname;
 
-    @NotNull (message = "Поле должно быть заполнено!")
-    @Past(message = "Введен неверный формат Даты рождения!")
+    @NotNull (message = "Поле должно быть заполнено!", groups = UserRegistration.class)
+    @Past(message = "Введен неверный формат Даты рождения!", groups = UserRegistration.class)
     @Column(name = "birthday")
     private LocalDate birthday;
 
     @Column(name = "balance")
     private double balance;
 
-    @NotNull
-    @Email(message = "Введен неверный формат email!")
-    @NotBlank(message = "Поле должно быть заполнено!")
+    @NotNull (message = "Поле должно быть заполнено!", groups = {UserLogin.class, UserRegistration.class})
+    @Email(message = "Введен неверный формат email!", groups = UserRegistration.class)
+    @NotBlank(message = "Поле должно быть заполнено!", groups = {UserLogin.class, UserRegistration.class})
     @Column(name = "email")
     private String email;
 
-    @NotNull
-    @NotBlank(message = "Поле должно быть заполнено!")
-    @Pattern(regexp = "\\S+", message = "Пароль не должен содержать пробелы!")
+    @NotNull (message = "Поле должно быть заполнено!", groups = {UserLogin.class, UserRegistration.class})
+    @NotBlank(message = "Поле должно быть заполнено!", groups = {UserLogin.class, UserRegistration.class})
+    @Pattern(regexp = "\\S+", message = "Пароль не должен содержать пробелы!", groups = UserRegistration.class)
     @Column(name = "password")
     private String password;
 
@@ -80,4 +90,10 @@ public class User extends BaseEntity {
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Order> orders;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles;
 }
