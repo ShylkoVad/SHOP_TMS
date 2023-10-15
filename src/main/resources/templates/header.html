@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org/" lang="ru">
+<html xmlns:th="http://www.thymeleaf.org/" lang="ru" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -16,8 +17,8 @@
 
     <script type="text/javascript" th:src="@{/script/date.js}"></script>
     <script type="text/javascript" th:src="@{/script/dropdown.js}"></script>
-    <link th:href="@{/styles/dropdown.css}" rel="stylesheet" />
-    <link th:href="@{/styles/header.css}" rel="stylesheet" />
+    <link th:href="@{/styles/dropdown.css}" rel="stylesheet"/>
+    <link th:href="@{/styles/header.css}" rel="stylesheet"/>
 
 </head>
 <body>
@@ -42,13 +43,19 @@
                             class="dropbtn nav-link mx-4 text-uppercase dropdown-toggle" data-bs-toggle="dropdown">
                         <img src="../../images/icons/user.png" class="me-2">Аккаунт
                     </button>
-                        <div id="myDropdown" class="dropdown-content">
+                    <div id="myDropdown" class="dropdown-content">
+                        <div sec:authorize="isAuthenticated()">
+                            <div class="mx-3">
+                                <p>Вошли как</p>
+                                <p style="font-weight:500" sec:authentication="name"></p>
+                            </div>
                             <a href="/account">Аккаунт</a>
-                            <a href="/login">Вход</a>
-                            <a href="/registration">Регистрация</a>
-                            <hr style=" border-top: 1px solid black;  border-bottom: 1px solid black;  height: 1px;"/>
                             <a href="/logout">Выход</a>
+                            <hr style=" border-top: 1px solid black;  border-bottom: 1px solid black;  height: 1px;"/>
                         </div>
+                        <a href="/login">Вход</a>
+                        <a href="/registration">Регистрация</a>
+                    </div>
                 </li>
 
             </ul>
@@ -76,7 +83,7 @@
                     </li>
                 </ul>
 
-                <form class="form-inline my-2 my-lg-0" method="post" action="/searchDto">
+                <form class="form-inline my-2 my-lg-0" method="post" action="/search">
                     <input type="hidden" name="command" value="searchDto"/>
                     <input type="text" class="form-control mr-sm-2" placeholder="Введите запрос"
                            name="searchKey"
@@ -85,7 +92,7 @@
                 </form>
 
                 <div class="navbar-nav">
-                    <a class="nav-link mx-5 text-uppercase" href="/searchDto">Расширенный поиск</a>
+                    <a class="nav-link mx-5 text-uppercase" href="/search">Расширенный поиск</a>
                 </div>
 
             </div>

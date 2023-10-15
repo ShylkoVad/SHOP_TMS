@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 @Configuration
 @EnableWebSecurity(debug = true)
@@ -22,7 +23,7 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(new AntPathRequestMatcher("/resources/templates/**"))
-                        .hasRole("admin")
+                        .permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/account/**"))
                         .authenticated()
                         .requestMatchers(new AntPathRequestMatcher("/cart/checkout"))
@@ -40,6 +41,7 @@ public class WebSecurityConfig {
                         .permitAll());
         return http.build();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
