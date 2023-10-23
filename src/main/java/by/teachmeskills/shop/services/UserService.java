@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 public interface UserService extends BaseService<User> {
 
-    ModelAndView authenticate(User user) throws EntityNotFoundException, LoginException, IncorrectUserDataException;
+    ModelAndView authenticate(String email, String password) throws EntityNotFoundException, LoginException, IncorrectUserDataException;
 
     ModelAndView createUser(User user) throws RegistrationException, EntityNotFoundException, IncorrectUserDataException;
 

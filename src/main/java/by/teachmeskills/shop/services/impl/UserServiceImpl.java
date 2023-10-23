@@ -101,8 +101,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ModelAndView authenticate(User user) throws LoginException, IncorrectUserDataException {
-
+    public ModelAndView authenticate(String email, String password) throws LoginException, IncorrectUserDataException {
+User user = new User();
         if (user != null && user.getEmail() != null && user.getPassword() != null) {
             User loggedUser = userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
 
@@ -144,7 +144,8 @@ public class UserServiceImpl implements UserService {
                 ModelMap model = new ModelMap();
 
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(createdUser.getEmail());
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails,
+                        null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(auth);
 
                 Pageable paging = PageRequest.of(0, ShopConstants.PAGE_SIZE, Sort.by("name").ascending());

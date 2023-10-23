@@ -32,14 +32,14 @@ public class LoginController {
     }
 
     @PostMapping
-    public ModelAndView login(@Validated(User.UserLogin.class) User user, BindingResult bindingResult, ModelAndView modelAndView)
+    public ModelAndView login(@Validated User user, BindingResult bindingResult, ModelAndView modelAndView)
             throws LoginException, IncorrectUserDataException, EntityNotFoundException {
-        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasFieldErrors("email") || bindingResult.hasFieldErrors("password")) {
             populateError("email", modelAndView, bindingResult);
             populateError("password", modelAndView, bindingResult);
             return new ModelAndView(LOGIN_PAGE.getPath());
         }
-        return userService.authenticate(user);
+        return userService.authenticate(user.getEmail(), user.getPassword());
     }
 
     private void populateError(String field, ModelAndView modelAndView, BindingResult bindingResult) {

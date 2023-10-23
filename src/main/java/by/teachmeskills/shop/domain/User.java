@@ -34,43 +34,37 @@ import java.util.List;
 @Entity
 public class User extends BaseEntity {
 
-    public interface UserRegistration {
-    }
-
-    public interface UserLogin {
-    }
-
-    @NotNull (message = "Поле должно быть заполнено!", groups = UserRegistration.class)
-    @NotBlank(message = "Поле должно быть заполнено!", groups = UserRegistration.class)
-    @Pattern(regexp = "^[А-Я][Ёа-яё]+$", message = "Введен неверный формат Имени!", groups = UserRegistration.class)
-    @Size(min = 2, message = "Имя не может быть менее 2 символов!", groups = UserRegistration.class)
+    @NotNull (message = "Поле должно быть заполнено!")
+    @NotBlank(message = "Поле должно быть заполнено!")
+    @Pattern(regexp = "^[А-Я][Ёа-яё]+$", message = "Введен неверный формат Имени!")
+    @Size(min = 2, message = "Имя не может быть менее 2 символов!")
     @Column(name = "name")
     private String name;
 
-    @NotNull (message = "Поле должно быть заполнено!", groups = UserRegistration.class)
-    @NotBlank(message = "Поле должно быть заполнено!", groups = UserRegistration.class)
-    @Pattern(regexp = "^[А-Я][Ёа-яё]+$", message = "Введен неверный формат Фамилии!", groups = UserRegistration.class)
-    @Size(min = 2, message = "Фамилия не может быть менее 2 символов!", groups = UserRegistration.class)
+    @NotNull (message = "Поле должно быть заполнено!")
+    @NotBlank(message = "Поле должно быть заполнено!")
+    @Pattern(regexp = "^[А-Я][Ёа-яё]+$", message = "Введен неверный формат Фамилии!")
+    @Size(min = 2, message = "Фамилия не может быть менее 2 символов!")
     @Column(name = "surname")
     private String surname;
 
-    @NotNull (message = "Поле должно быть заполнено!", groups = UserRegistration.class)
-    @Past(message = "Введен неверный формат Даты рождения!", groups = UserRegistration.class)
+    @NotNull (message = "Поле должно быть заполнено!")
+    @Past(message = "Введен неверный формат Даты рождения!")
     @Column(name = "birthday")
     private LocalDate birthday;
 
     @Column(name = "balance")
     private double balance;
 
-    @NotNull (message = "Поле должно быть заполнено!", groups = {UserLogin.class, UserRegistration.class})
-    @Email(message = "Введен неверный формат email!", groups = UserRegistration.class)
-    @NotBlank(message = "Поле должно быть заполнено!", groups = {UserLogin.class, UserRegistration.class})
+    @NotNull (message = "Поле должно быть заполнено!")
+    @Email(message = "Введен неверный формат email!")
+    @NotBlank(message = "Поле должно быть заполнено!")
     @Column(name = "email")
     private String email;
 
-    @NotNull (message = "Поле должно быть заполнено!", groups = {UserLogin.class, UserRegistration.class})
-    @NotBlank(message = "Поле должно быть заполнено!", groups = {UserLogin.class, UserRegistration.class})
-    @Pattern(regexp = "\\S+", message = "Пароль не должен содержать пробелы!", groups = UserRegistration.class)
+    @NotNull (message = "Поле должно быть заполнено!")
+    @NotBlank(message = "Поле должно быть заполнено!")
+    @Pattern(regexp = "\\S+", message = "Пароль не должен содержать пробелы!")
     @Column(name = "password")
     private String password;
 
