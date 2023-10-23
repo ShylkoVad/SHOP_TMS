@@ -3,8 +3,6 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../../css/home.css">
-    <link rel="stylesheet" type="text/css" href="../../css/product.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -16,6 +14,9 @@
             integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
             crossorigin="anonymous"></script>
 
+    <link th:href="@{/styles/home.css}" rel="stylesheet"/>
+    <link th:href="@{/styles/shoppingCart.css}" rel="stylesheet"/>
+
     <title>Корзина</title>
 </head>
 <body>
@@ -23,35 +24,33 @@
 <div th:insert="~{header.html}"></div>
 <div class="container">
     <h2 class="py-4" style="text-align: center">Ваш заказ</h2>
-    <div class="offset-1 mb-5">
+    <div class="offset-1 my-5">
         <div class="row g-0" th:each="product : ${cartProductsList}">
             <div class="col-md-2">
                 <th:block th:each="image : ${product.images}">
                     <img class="img-fluid rounded-start ml-3"
                          style="max-height:500px; width: auto;"
                          th:src="${image.imagePath}" alt="Card image"
-                         th:if="${image.primaryImage == 1}"
-                    >
+                         th:if="${image.primaryImage == 1}">
                 </th:block>
             </div>
             <div class="col-md-10">
                 <div class="card-body">
                     <p style="vertical-align: middle">
-                    <p class="ml-4 priceName" th:text="${product.name}">Имя продукта</p>
-                    <p class="ml-4" th:text="${product.description}">Описание продукта</p>
-                    <span class="ml-4 priceProduct" th:text="${product.price + ' р.'}">Цена</span>
+                    <p class="m-4 priceNameCart" th:text="${product.name}">Имя продукта</p>
+                    <p class="m-4" th:text="${product.description}">Описание продукта</p>
+                    <span class="ml-4 priceProductCart" th:text="${product.price + ' р.'}">Цена</span>
                     <a th:href="@{'/cart/remove?product_id=' + ${product.id}}">
-                        <button id="removeProductFromCart" type="button" class="btn btn-outline-dark ml-4"
+                        <button id="removeProductFromCart" type="button" class="btn btn-outline-dark ml-4 mb-4"
                                 onclick="productRemovedFromShoppingCart()">Удалить
                         </button>
                     </a>
-                    </p>
                 </div>
             </div>
         </div>
     </div>
     <a href="/cart/checkout" class="btn-lg d-grid gap-2 d-md-flex justify-content-md-end">
-        <button type="button" class="btn btn-outline-dark ml-4"
+        <button type="button" class="btn btn-outline-dark m-4"
                 onclick="orderIsProcessed()">Оформить заказ
         </button>
     </a>

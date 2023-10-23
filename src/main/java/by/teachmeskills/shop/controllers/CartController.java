@@ -1,7 +1,6 @@
 package by.teachmeskills.shop.controllers;
 
 import by.teachmeskills.shop.domain.Cart;
-import by.teachmeskills.shop.domain.User;
 import by.teachmeskills.shop.enums.ShopConstants;
 import by.teachmeskills.shop.exceptions.EntityNotFoundException;
 import by.teachmeskills.shop.services.CartService;
@@ -13,11 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import static by.teachmeskills.shop.enums.ShopConstants.PRODUCT_ID_PARAM;
 import static by.teachmeskills.shop.enums.ShopConstants.SHOPPING_CART;
-import static by.teachmeskills.shop.enums.ShopConstants.USER;
 
 @RestController
-@SessionAttributes({SHOPPING_CART, USER})
+@SessionAttributes(SHOPPING_CART)
 @RequestMapping("/cart")
 public class CartController {
     private final CartService cartService;
@@ -27,23 +26,24 @@ public class CartController {
     }
 
     @GetMapping("/add")
-    public ModelAndView addProductToCart(@RequestParam(ShopConstants.PRODUCT_ID_PARAM) String id, @ModelAttribute(SHOPPING_CART) Cart shopCart) {
+    public ModelAndView addProductToCart(@RequestParam(PRODUCT_ID_PARAM) String id, @ModelAttribute(SHOPPING_CART) Cart shopCart) {
         return cartService.addProductToCart(id, shopCart);
     }
 
     @GetMapping("/remove")
-    public ModelAndView removeProductFromCart(@RequestParam(ShopConstants.PRODUCT_ID_PARAM) String id, @ModelAttribute(SHOPPING_CART) Cart shopCart) throws EntityNotFoundException {
+    public ModelAndView removeProductFromCart(@RequestParam(PRODUCT_ID_PARAM) String id,
+                                              @ModelAttribute(SHOPPING_CART) Cart shopCart) throws EntityNotFoundException {
         return cartService.removeProductFromCart(id, shopCart);
     }
 
     @GetMapping("/open")
-    public ModelAndView redirectToShoppingCart(@ModelAttribute(SHOPPING_CART) Cart shopCart) {
+    public ModelAndView openShopCart(@ModelAttribute(SHOPPING_CART) Cart shopCart) {
         return cartService.showCartProductList(shopCart);
     }
 
     @GetMapping("/checkout")
-    public ModelAndView checkout(@ModelAttribute(SHOPPING_CART) Cart shopCart, User user) {
-        return cartService.checkout(shopCart, user);
+    public ModelAndView checkout(@ModelAttribute(SHOPPING_CART) Cart shopCart) {
+        return cartService.checkout(shopCart);
     }
 
     @ModelAttribute(SHOPPING_CART)

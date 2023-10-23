@@ -16,9 +16,6 @@ CREATE TABLE IF NOT EXISTS shop.users (
     UNIQUE INDEX IDX_USERS_PASSWORD_UNIQUE (password ASC)
     );
 
-INSERT INTO shop.users(name, surname, birthday, balance, email, password, street, accommodation_number, flat_number, phone_number)
-VALUES ('Вадим', 'Шилько', '1984-09-08', 150.00, 'shilko_vad@mail.ru', '1234', 'ул. Маяковского', '8', '167', '+375297191205');
-
 CREATE TABLE IF NOT EXISTS shop.categories (
     id   INT         NOT NULL AUTO_INCREMENT,
     name VARCHAR(45) NOT NULL,

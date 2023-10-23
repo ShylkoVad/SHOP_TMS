@@ -43,4 +43,12 @@ public class GlobalControllerExceptionHandler {
                         ex.getMessage()));
         return new ModelAndView(ERROR_PAGE.getPath(), modelMap);
     }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler({LoginException.class, EntityNotFoundException.class})
+    public ModelAndView handlerAuthorisationException(Exception ex) {
+        ModelMap modelMap = new ModelMap();
+        modelMap.addAttribute(ERROR_PARAM.getValue(), ex.getMessage());
+        return new ModelAndView(ERROR_PAGE.getPath(), modelMap);
+    }
 }

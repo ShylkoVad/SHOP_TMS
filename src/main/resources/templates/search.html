@@ -16,7 +16,7 @@
 
     <link th:href="@{/styles/header.css}" rel="stylesheet"/>
     <link th:href="@{/styles/product.css}" rel="stylesheet"/>
-    <link th:href="@{/styles/searchDto.css}" rel="stylesheet"/>
+    <link th:href="@{/styles/search.css}" rel="stylesheet"/>
     <link th:href="@{/styles/home.css}" rel="stylesheet"/>
 
     <title>Страница поиска</title>
@@ -43,16 +43,16 @@
                     <div class="dropdown-content_home">
                         <a class="dropdown-item"
                            th:classappend="${pageSize == selectedPageSize ? 'active' : ''}"
-                           th:href="@{'/searchDto?pageNumber=0&pageSize=' + ${pageSize}}"
+                           th:href="@{'/search?pageNumber=0&pageSize=' + ${pageSize}}"
                            th:text="${pageSize}">Размер страницы</a>
                         <a class="dropdown-item"
                            th:classappend="${pageSize * 2 == selectedPageSize ? 'active' : ''}"
-                           th:href="@{'/searchDto?pageNumber=0&pageSize=' + ${pageSize * 2}}"
+                           th:href="@{'/search?pageNumber=0&pageSize=' + ${pageSize * 2}}"
                            th:text="${pageSize * 2}">
                             Двойной размер страницы</a>
                         <a class="dropdown-item"
                            th:classappend="${pageSize * 3 == selectedPageSize ? 'active' : ''}"
-                           th:href="@{'/searchDto?pageNumber=0&pageSize=' + ${pageSize * 3}}"
+                           th:href="@{'/search?pageNumber=0&pageSize=' + ${pageSize * 3}}"
                            th:text="${pageSize * 3}">Тройной размер страницы</a>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
             <div class="sideBar">
                 <div>
                     <h5>Расширенный поиск</h5>
-                    <form method="post" action="/searchDto">
+                    <form method="post" action="/search">
                         <div class="form-group">
                             <label for="searchKey">Название товара:</label>
                             <input type="text"
@@ -133,7 +133,7 @@
                         <li class="page-item"
                             th:classappend="${pageNumber == 1 ? 'disabled' : ''}">
                             <a class="page-link" style="color: black"
-                               th:href="@{'/searchDto?pageNumber=' + ${pageNumber - 2} + '&pageSize=' + ${selectedPageSize}}"
+                               th:href="@{'/search?pageNumber=' + ${pageNumber - 2} + '&pageSize=' + ${selectedPageSize}}"
                                tabindex="-1"
                             >Предыдущая</a>
                         </li>
@@ -141,14 +141,14 @@
                             <li class="page-item"
                                 th:classappend="${pageNumber == i ? 'active' : ''}">
                                 <a class="page-link" style="color: black"
-                                   th:href="@{'/searchDto?pageNumber=' + ${i - 1} + '&pageSize=' + ${selectedPageSize}}"
+                                   th:href="@{'/search?pageNumber=' + ${i - 1} + '&pageSize=' + ${selectedPageSize}}"
                                    th:text="${i}">Номер страницы</a>
                             </li>
                         </th:block>
                         <li class="page-item"
                             th:classappend="${pageNumber == totalPages? 'disabled' : ''}">
                             <a class="page-link" style="color: black"
-                               th:href="@{'/searchDto?pageNumber=' + ${pageNumber} + '&pageSize=' + ${selectedPageSize}}">Следующая</a>
+                               th:href="@{'/search?pageNumber=' + ${pageNumber} + '&pageSize=' + ${selectedPageSize}}">Следующая</a>
                         </li>
                     </th:block>
                 </ul>

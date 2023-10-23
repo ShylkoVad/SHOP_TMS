@@ -3,6 +3,10 @@ package by.teachmeskills.shop.domain;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
@@ -30,14 +34,14 @@ import java.util.List;
 @Entity
 public class User extends BaseEntity {
 
-    @NotNull
+    @NotNull (message = "Поле должно быть заполнено!")
     @NotBlank(message = "Поле должно быть заполнено!")
     @Pattern(regexp = "^[А-Я][Ёа-яё]+$", message = "Введен неверный формат Имени!")
     @Size(min = 2, message = "Имя не может быть менее 2 символов!")
     @Column(name = "name")
     private String name;
 
-    @NotNull
+    @NotNull (message = "Поле должно быть заполнено!")
     @NotBlank(message = "Поле должно быть заполнено!")
     @Pattern(regexp = "^[А-Я][Ёа-яё]+$", message = "Введен неверный формат Фамилии!")
     @Size(min = 2, message = "Фамилия не может быть менее 2 символов!")
@@ -52,13 +56,13 @@ public class User extends BaseEntity {
     @Column(name = "balance")
     private double balance;
 
-    @NotNull
+    @NotNull (message = "Поле должно быть заполнено!")
     @Email(message = "Введен неверный формат email!")
     @NotBlank(message = "Поле должно быть заполнено!")
     @Column(name = "email")
     private String email;
 
-    @NotNull
+    @NotNull (message = "Поле должно быть заполнено!")
     @NotBlank(message = "Поле должно быть заполнено!")
     @Pattern(regexp = "\\S+", message = "Пароль не должен содержать пробелы!")
     @Column(name = "password")
@@ -80,4 +84,10 @@ public class User extends BaseEntity {
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Order> orders;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles;
 }

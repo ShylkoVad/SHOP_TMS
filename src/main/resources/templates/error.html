@@ -1,21 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org/" lang="ru">
 <head>
-    <title>Ошибка</title>
-    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</head>
-<body>
-<h2>Ошибка</h2>
 
-<div class="container-fluid mb-4">
-    <h2 class="alert alert-danger" role="alert"
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+            crossorigin="anonymous"></script>
+
+    <link th:href="@{/styles/header.css}" rel="stylesheet"/>
+    <link th:href="@{/styles/product.css}" rel="stylesheet"/>
+    <link th:href="@{/styles/search.css}" rel="stylesheet"/>
+    <link th:href="@{/styles/home.css}" rel="stylesheet"/>
+
+    <title>Страница ошибки</title>
+</head>
+
+<body>
+
+<div th:insert="~{header.html}"></div>
+
+
+<div class="container-fluid my-4 h1Category col-4">
+    <h2>Ошибка</h2>
+    <h2 class="alert alert-secondary my-4" role="alert"
         th:text="${error}">Название ошибки</h2>
-    <input type="button" class="btn btn-danger"
+    <input type="button" class="btn btn-outline-dark"
            onclick="history.back();" value="Назад"/>
 </div>
 </body>
