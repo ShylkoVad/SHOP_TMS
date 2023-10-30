@@ -60,9 +60,6 @@
                     <p class="card-text ml-4" th:text="${product.description}">Описание продукта</p>
                     <p style="vertical-align: middle">
                         <span class="ml-4 priceProduct" th:text="${product.price + ' р.'}">Цена</span>
-                        <input type="number" class="input ml-4 mr-2" name="quantityProduct" value="1" min="1"
-                               step="1"
-                               max="">шт.
                         <a th:href="@{'/cart/add?product_id=' + ${product.id}}">
                             <button id="addProductToCart" type="button" class="btn btn-outline-dark ml-4"
                                     onclick="productAddedToShoppingCart()">Купить

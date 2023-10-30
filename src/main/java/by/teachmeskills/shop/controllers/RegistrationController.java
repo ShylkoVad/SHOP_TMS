@@ -32,7 +32,7 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public ModelAndView registration(@Validated(User.UserRegistration.class) User user, BindingResult bindingResult, ModelAndView modelAndView)
+    public ModelAndView registration(@Validated User user, BindingResult bindingResult, ModelAndView modelAndView)
             throws RegistrationException, EntityNotFoundException, IncorrectUserDataException {
         if (bindingResult.hasErrors()) {
             populateError("name", modelAndView, bindingResult);
