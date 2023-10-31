@@ -71,9 +71,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Категории с id %d не найдено.", id)));
         Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by("name").ascending());
         List<Product> products = productService.getProductsByCategoryId(category.getId(), paging);
-        if (products.isEmpty()) {
-            throw new EntityNotFoundException("Продукты не найдены.");
-                   }
+
         int totalItems = productRepository.findAllByCategoryId(id).size();
         int totalPages = (int) (Math.ceil((double) totalItems / pageSize));
 
